@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderation Scripts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #3d3d3d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --border: #404040;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 30px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-content {
+            display: flex;
+            min-height: 600px;
+            position: relative;
+        }
+
+        .names-section {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid var(--border);
+        }
+
+        .section-title {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #names-list {
+            min-height: 400px;
+        }
+
+        .name-item {
+            background: var(--bg-tertiary);
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .name-item:hover {
+            border-color: var(--accent);
+            background: var(--bg-secondary);
+        }
+
+        .name-item-number {
+            background: var(--accent);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .name-item-content {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .name-text {
+            font-weight: 500;
+        }
+
+        .name-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .edit-btn, .delete-btn, .order-btn, .record-btn {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .edit-btn:hover {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+        }
+
+        .order-btn:hover {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: white;
+        }
+
+        .record-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .record-btn.recording {
+            background: var(--danger);
+            border-color: var(--danger);
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Script Modal */
+        .script-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            padding: 0;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            z-index: 1000;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .modal-header {
+            background: var(--bg-tertiary);
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 13px 13px 0 0;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: #dc2626;
+        }
+
+        .modal-content {
+            padding: 25px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        #modal-script {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .audio-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+        }
+
+        .audio-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .audio-section-title {
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .audio-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .audio-visualizer {
+            height: 60px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .visualizer-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 100%;
+            padding: 0 10px;
+        }
+
+        .visualizer-bar {
+            width: 6px;
+            background: var(--accent);
+            border-radius: 3px;
+            transition: height 0.1s ease;
+        }
+
+        .recording-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--danger);
+            font-weight: bold;
+        }
+
+        .recording-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--danger);
+            animation: pulse 1.5s infinite;
+        }
+
+        .recording-timer {
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 999;
+        }
+
+        /* Order Modal */
+        .order-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-secondary);
+            border: 2px solid var(--warning);
+            border-radius: 15px;
+            padding: 0;
+            width: 90%;
+            max-width: 500px;
+            z-index: 1002;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            margin: 5px;
+            border-radius: 8px;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-number {
+            background: var(--warning);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .order-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .order-input {
+            width: 80px;
+            padding: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-primary);
+            text-align: center;
+            margin-left: 10px;
+        }
+
+        /* Form Styles */
+        .add-name-form {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #0da271;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .sync-status {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .sync-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .sync-dot.syncing {
+            background: #f59e0b;
+        }
+
+        .sync-dot.error {
+            background: var(--danger);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .instructions {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-message {
+            color: var(--text-secondary);
+            text-align: center;
+            font-style: italic;
+            padding: 40px 20px;
+        }
+
+        .reorder-btn {
+            background: var(--warning);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reorder-btn:hover {
+            background: #d97706;
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .audio-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 5px 0;
+            padding: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .audio-item-name {
+            flex: 1;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .names-section {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            
+            .audio-buttons {
+                flex-direction: column;
+            }
+            
+            .audio-buttons .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎤 Moderation Scripts</h1>
+            <p class="subtitle">Kollaborative Verwaltung von Moderationstexten mit Sprachaufnahmen</p>
+        </header>
+
+        <div class="sync-status">
+            <div class="sync-indicator">
+                <div class="sync-dot" id="sync-dot"></div>
+                <span id="sync-text">Lokaler Speicher</span>
+            </div>
+            <button class="btn" onclick="forceSync()">🔄 Sync erzwingen</button>
+        </div>
+
+        <div class="instructions">
+            <strong>💡 Anleitung:</strong> 
+            • Klicke auf einen Namen, um das Script im Fenster zu sehen<br>
+            • Bearbeite Namen und Scripts mit dem ✎ Button<br>
+            • Verwende das 🎤 Symbol, um Sprachaufnahmen zu erstellen<br>
+            • Ändere die Reihenfolge mit dem 📋 Button oder dem Reihenfolge-Editor<br>
+            • Änderungen werden für alle Nutzer synchronisiert
+        </div>
+
+        <div class="main-content">
+            <div class="names-section">
+                <h2 class="section-title">
+                    Personen
+                    <span style="font-size: 0.8em; color: var(--text-secondary);">
+                        (Anzahl: <span id="person-count">0</span>)
+                    </span>
+                </h2>
+
+                <button class="reorder-btn" onclick="openOrderEditor()">
+                    📋 Reihenfolge bearbeiten
+                </button>
+                
+                <div id="names-list">
+                    <!-- Namen werden hier dynamisch eingefügt -->
+                </div>
+
+                <div class="add-name-form">
+                    <h3 style="margin-bottom: 15px;" id="form-title">➕ Neue Person hinzufügen</h3>
+                    <div class="form-group">
+                        <label for="name-input">Name:</label>
+                        <input type="text" id="name-input" placeholder="Name der Person">
+                        <div class="error-message" id="name-error">Bitte geben Sie einen Namen ein</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="script-input">Moderation Script:</label>
+                        <textarea id="script-input" placeholder="Moderationstext für diese Person..."></textarea>
+                        <div class="error-message" id="script-error">Bitte geben Sie ein Script ein</div>
+                    </div>
+                    <button class="btn btn-success" onclick="addPerson()" id="submit-btn">Person hinzufügen</button>
+                    <button class="btn" onclick="cancelEdit()" id="cancel-btn" style="display: none;">Abbrechen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Modal -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal()"></div>
+    <div class="script-modal" id="script-modal">
+        <div class="modal-header">
+            <div class="modal-title" id="modal-title">Script</div>
+            <button class="close-btn" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-content">
+            <div id="modal-script"></div>
+            
+            <div class="audio-controls">
+                <div class="audio-section">
+                    <div class="audio-section-title">Sprachaufnahmen</div>
+                    
+                    <div class="recording-indicator" id="recording-indicator" style="display: none;">
+                        <div class="recording-dot"></div>
+                        <span>Aufnahme läuft...</span>
+                        <span class="recording-timer" id="recording-timer">00:00</span>
+                    </div>
+                    
+                    <div class="audio-visualizer" id="audio-visualizer" style="display: none;">
+                        <div class="visualizer-bars" id="visualizer-bars"></div>
+                    </div>
+                    
+                    <div class="audio-buttons">
+                        <button class="btn" id="start-record-btn" onclick="startRecording()">🎤 Aufnahme starten</button>
+                        <button class="btn btn-danger" id="stop-record-btn" onclick="stopRecording()" style="display: none;">⏹️ Aufnahme stoppen</button>
+                        <button class="btn btn-success" id="play-audio-btn" onclick="playRecording()" style="display: none;">▶️ Aufnahme abspielen</button>
+                        <button class="btn btn-warning" id="delete-audio-btn" onclick="deleteRecording()" style="display: none;">🗑️ Aufnahme löschen</button>
+                    </div>
+                    
+                    <div id="audio-player-container" style="display: none;">
+                        <audio controls class="audio-player" id="audio-player"></audio>
+                    </div>
+                    
+                    <div id="saved-recordings">
+                        <!-- Gespeicherte Aufnahmen werden hier angezeigt -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Editor Modal -->
+    <div class="modal-overlay" id="order-overlay" onclick="closeOrderEditor()"></div>
+    <div class="order-modal" id="order-modal">
+        <div class="modal-header">
+            <div class="modal-title">📋 Reihenfolge bearbeiten</div>
+            <button class="close-btn" onclick="closeOrderEditor()">×</button>
+        </div>
+        <div class="modal-content">
+            <div id="order-list">
+                <!-- Order items werden hier dynamisch eingefügt -->
+            </div>
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn btn-success" onclick="saveOrder()">Reihenfolge speichern</button>
+                <button class="btn" onclick="closeOrderEditor()">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datenstruktur
+        let persons = [];
+        let currentEditId = null;
+        let tempOrder = [];
+        let currentPersonId = null;
+        
+        // Audio-Aufnahme Variablen
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let audioBlob = null;
+        let audioURL = null;
+        let recordingTimer = null;
+        let recordingStartTime = null;
+        let audioContext = null;
+        let analyser = null;
+        let visualizationInterval = null;
+
+        // Initialisierung
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFromLocalStorage();
+            
+            // Enter-Taste für Formular
+            document.getElementById('name-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addPerson();
+                }
+            });
+            
+            // ESC Taste zum Schließen der Modals
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                    closeOrderEditor();
+                    if (currentEditId) {
+                        cancelEdit();
+                    }
+                }
+            });
+            
+            // Visualizer-Bars vorbereiten
+            initVisualizer();
+        });
+
+        // Visualizer initialisieren
+        function initVisualizer() {
+            const visualizerBars = document.getElementById('visualizer-bars');
+            visualizerBars.innerHTML = '';
+            for (let i = 0; i < 20; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'visualizer-bar';
+                bar.style.height = '5px';
+                visualizerBars.appendChild(bar);
+            }
+        }
+
+        // Lokalen Speicher laden
+        function loadFromLocalStorage() {
+            const localData = localStorage.getItem('moderationPersons');
+            if (localData) {
+                try {
+                    persons = JSON.parse(localData);
+                } catch (e) {
+                    console.error('Fehler beim Laden der Daten:', e);
+                    persons = [];
+                }
+            } else {
+                // Beispieldaten
+                persons = [
+                    {
+                        id: 1,
+                        name: "Max Mustermann",
+                        script: "Guten Abend, meine Damen und Herren!\n\nWillkommen zu unserer heutigen Veranstaltung.",
+                        recordings: []
+                    },
+                    {
+                        id: 2,
+                        name: "Anna Schmidt", 
+                        script: "Herzlich willkommen liebe Gäste!\n\nEs ist mir eine große Freude...",
+                        recordings: []
+                    }
+                ];
+                saveData();
+            }
+            renderNamesList();
+            setSyncStatus('Lokaler Speicher', 'synced');
+        }
+
+        // Sync Status anzeigen
+        function setSyncStatus(text, status) {
+            const dot = document.getElementById('sync-dot');
+            const textEl = document.getElementById('sync-text');
+            
+            textEl.textContent = text;
+            dot.className = 'sync-dot';
+            if (status === 'syncing') dot.classList.add('syncing');
+            if (status === 'error') dot.classList.add('error');
+        }
+
+        // Sync erzwingen
+        function forceSync() {
+            setSyncStatus('Synchronisiere...', 'syncing');
+            setTimeout(() => {
+                setSyncStatus('Lokaler Speicher', 'synced');
+            }, 1000);
+        }
+
+        // Namenliste rendern
+        function renderNamesList() {
+            const namesList = document.getElementById('names-list');
+            updatePersonCount();
+            
+            if (persons.length === 0) {
+                namesList.innerHTML = '<div class="empty-message">Noch keine Personen vorhanden. Füge welche hinzu!</div>';
+                return;
+            }
+
+            namesList.innerHTML = persons.map((person, index) => {
+                const hasRecording = person.recordings && person.recordings.length > 0;
+                return `
+                <div class="name-item" data-id="${person.id}" onclick="showScript(${person.id})" tabindex="0" role="button" aria-label="Script für ${person.name} anzeigen">
+                    <div class="name-item-number">${index + 1}</div>
+                    <div class="name-item-content">
+                        <span class="name-text">${person.name} ${hasRecording ? '🎵' : ''}</span>
+                        <div class="name-actions">
+                            <button class="record-btn" onclick="event.stopPropagation(); showScript(${person.id}, true)" aria-label="Aufnahme für ${person.name}">🎤</button>
+                            <button class="order-btn" onclick="event.stopPropagation(); changeOrder(${person.id})" aria-label="Reihenfolge für ${person.name} ändern">🔢</button>
+                            <button class="edit-btn" onclick="event.stopPropagation(); editPerson(${person.id})" aria-label="${person.name} bearbeiten">✎</button>
+                            <button class="delete-btn" onclick="event.stopPropagation(); deletePerson(${person.id})" aria-label="${person.name} löschen">×</button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // Script im Modal anzeigen
+        function showScript(personId, showAudioControls = false) {
+            const person = persons.find(p => p.id === personId);
+            
+            if (person) {
+                currentPersonId = personId;
+                document.getElementById('modal-title').textContent = person.name;
+                document.getElementById('modal-script').textContent = person.script;
+                document.getElementById('script-modal').style.display = 'block';
+                document.getElementById('modal-overlay').style.display = 'block';
+                
+                // Audio-Controls anzeigen/verstecken
+                const audioControls = document.querySelector('.audio-controls');
+                audioControls.style.display = showAudioControls ? 'block' : 'none';
+                
+                // Gespeicherte Aufnahmen anzeigen
+                displaySavedRecordings(personId);
+                
+                // Fokus auf den Schließen-Button setzen für Barrierefreiheit
+                document.querySelector('#script-modal .close-btn').focus();
+            }
+        }
+
+        // Gespeicherte Aufnahmen anzeigen
+        function displaySavedRecordings(personId) {
+            const person = persons.find(p => p.id === personId);
+            const savedRecordingsContainer = document.getElementById('saved-recordings');
+            
+            if (!person.recordings || person.recordings.length === 0) {
+                savedRecordingsContainer.innerHTML = '<div class="empty-message">Keine Aufnahmen vorhanden</div>';
+                return;
+            }
+            
+            savedRecordingsContainer.innerHTML = '<div class="audio-section-title">Gespeicherte Aufnahmen:</div>';
+            
+            person.recordings.forEach((recording, index) => {
+                const recordingItem = document.createElement('div');
+                recordingItem.className = 'audio-item';
+                recordingItem.innerHTML = `
+                    <span class="audio-item-name">Aufnahme ${index + 1} (${new Date(recording.timestamp).toLocaleString()})</span>
+                    <button class="btn" onclick="playSavedRecording(${personId}, ${index})">▶️ Abspielen</button>
+                    <button class="btn btn-danger" onclick="deleteSavedRecording(${personId}, ${index})">🗑️ Löschen</button>
+                `;
+                savedRecordingsContainer.appendChild(recordingItem);
+            });
+        }
+
+        // Modal schließen
+        function closeModal() {
+            document.getElementById('script-modal').style.display = 'none';
+            document.getElementById('modal-overlay').style.display = 'none';
+            
+            // Aufnahme stoppen, falls aktiv
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                stopRecording();
+            }
+            
+            // Audio-Context schließen
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+        }
+
+        // Aufnahme starten
+        async function startRecording() {
+            try {
+                // Mikrofon-Zugriff anfordern
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                // MediaRecorder initialisieren
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                // Event-Listener für Daten
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+                
+                // Event-Listener für Ende der Aufnahme
+                mediaRecorder.onstop = () => {
+                    audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    audioURL = URL.createObjectURL(audioBlob);
+                    
+                    // UI zurücksetzen
+                    document.getElementById('start-record-btn').style.display = 'none';
+                    document.getElementById('stop-record-btn').style.display = 'none';
+                    document.getElementById('play-audio-btn').style.display = 'inline-block';
+                    document.getElementById('delete-audio-btn').style.display = 'inline-block';
+                    document.getElementById('recording-indicator').style.display = 'none';
+                    document.getElementById('audio-visualizer').style.display = 'none';
+                    
+                    // Timer stoppen
+                    clearInterval(recordingTimer);
+                    
+                    // Stream stoppen
+                    stream.getTracks().forEach(track => track.stop());
+                    
+                    // Visualisierung stoppen
+                    clearInterval(visualizationInterval);
+                    initVisualizer();
+                };
+                
+                // Aufnahme starten
+                mediaRecorder.start();
+                
+                // UI aktualisieren
+                document.getElementById('start-record-btn').style.display = 'none';
+                document.getElementById('stop-record-btn').style.display = 'inline-block';
+                document.getElementById('recording-indicator').style.display = 'flex';
+                document.getElementById('audio-visualizer').style.display = 'block';
+                
+                // Timer starten
+                recordingStartTime = Date.now();
+                updateRecordingTimer();
+                recordingTimer = setInterval(updateRecordingTimer, 1000);
+                
+                // Audio-Visualisierung starten
+                startVisualization(stream);
+                
+            } catch (error) {
+                console.error('Fehler beim Starten der Aufnahme:', error);
+                alert('Fehler beim Zugriff auf das Mikrofon. Bitte stellen Sie sicher, dass Sie die Berechtigung erteilt haben.');
+            }
+        }
+
+        // Aufnahme stoppen
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+        }
+
+        // Aufnahme abspielen
+        function playRecording() {
+            if (audioURL) {
+                const audioPlayer = document.getElementById('audio-player');
+                audioPlayer.src = audioURL;
+                document.getElementById('audio-player-container').style.display = 'block';
+                audioPlayer.play();
+            }
+        }
+
+        // Aufnahme löschen
+        function deleteRecording() {
+            if (confirm('Möchten Sie die aktuelle Aufnahme wirklich löschen?')) {
+                audioURL = null;
+                audioBlob = null;
+                
+                // UI zurücksetzen
+                document.getElementById('start-record-btn').style.display = 'inline-block';
+                document.getElementById('play-audio-btn').style.display = 'none';
+                document.getElementById('delete-audio-btn').style.display = 'none';
+                document.getElementById('audio-player-container').style.display = 'none';
+            }
+        }
+
+        // Gespeicherte Aufnahme abspielen
+        function playSavedRecording(personId, recordingIndex) {
+            const person = persons.find(p => p.id === personId);
+            if (person && person.recordings && person.recordings[recordingIndex]) {
+                const recording = person.recordings[recordingIndex];
+                const audioBlob = new Blob([recording.data], { type: 'audio/wav' });
+                const audioURL = URL.createObjectURL(audioBlob);
+                
+                const audioPlayer = document.getElementById('audio-player');
+                audioPlayer.src = audioURL;
+                document.getElementById('audio-player-container').style.display = 'block';
+                audioPlayer.play();
+            }
+        }
+
+        // Gespeicherte Aufnahme löschen
+        function deleteSavedRecording(personId, recordingIndex) {
+            if (confirm('Möchten Sie diese Aufnahme wirklich löschen?')) {
+                const person = persons.find(p => p.id === personId);
+                if (person && person.recordings) {
+                    person.recordings.splice(recordingIndex, 1);
+                    saveData();
+                    displaySavedRecordings(personId);
+                }
+            }
+        }
+
+        // Aufnahme speichern
+        function saveRecording() {
+            if (audioBlob && currentPersonId) {
+                const person = persons.find(p => p.id === currentPersonId);
+                if (person) {
+                    // Blob in ArrayBuffer konvertieren für die Speicherung
+                    const reader = new FileReader();
+                    reader.onload = function() {
+                        if (!person.recordings) {
+                            person.recordings = [];
+                        }
+                        
+                        person.recordings.push({
+                            data: Array.from(new Uint8Array(reader.result)),
+                            timestamp: Date.now()
+                        });
+                        
+                        saveData();
+                        displaySavedRecordings(currentPersonId);
+                        
+                        // UI zurücksetzen
+                        document.getElementById('start-record-btn').style.display = 'inline-block';
+                        document.getElementById('play-audio-btn').style.display = 'none';
+                        document.getElementById('delete-audio-btn').style.display = 'none';
+                        document.getElementById('audio-player-container').style.display = 'none';
+                        
+                        alert('Aufnahme erfolgreich gespeichert!');
+                    };
+                    reader.readAsArrayBuffer(audioBlob);
+                }
+            }
+        }
+
+        // Timer für Aufnahme aktualisieren
+        function updateRecordingTimer() {
+            const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+            const seconds = (elapsed % 60).toString().padStart(2, '0');
+            document.getElementById('recording-timer').textContent = `${minutes}:${seconds}`;
+        }
+
+        // Audio-Visualisierung starten
+        function startVisualization(stream) {
+            if (!audioContext) {
+                audioContext = new AudioContext();
+            }
+            
+            const source = audioContext.createMediaStreamSource(stream);
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 256;
+            source.connect(analyser);
+            
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            
+            visualizationInterval = setInterval(() => {
+                analyser.getByteFrequencyData(dataArray);
+                
+                const visualizerBars = document.getElementById('visualizer-bars');
+                const bars = visualizerBars.querySelectorAll('.visualizer-bar');
+                
+                for (let i = 0; i < bars.length; i++) {
+                    const value = dataArray[Math.floor(i * bufferLength / bars.length)];
+                    const height = Math.max(5, (value / 255) * 100);
+                    bars[i].style.height = `${height}%`;
+                }
+            }, 100);
+        }
+
+        // Reihenfolge-Editor öffnen
+        function openOrderEditor() {
+            // Temporäre Kopie der Reihenfolge erstellen
+            tempOrder = [...persons];
+            
+            const orderList = document.getElementById('order-list');
+            orderList.innerHTML = tempOrder.map((person, index) => `
+                <div class="order-item">
+                    <div class="order-number">${index + 1}</div>
+                    <div class="order-name">${person.name}</div>
+                    <input type="number" class="order-input" id="order-${person.id}" 
+                           value="${index + 1}" min="1" max="${tempOrder.length}" 
+                           onchange="updateTempOrder(${person.id}, this.value)">
+                </div>
+            `).join('');
+            
+            document.getElementById('order-modal').style.display = 'block';
+            document.getElementById('order-overlay').style.display = 'block';
+            
+            // Fokus auf den ersten Input setzen
+            if (tempOrder.length > 0) {
+                document.getElementById(`order-${tempOrder[0].id}`).focus();
+            }
+        }
+
+        // Temporäre Reihenfolge aktualisieren
+        function updateTempOrder(personId, newPosition) {
+            newPosition = parseInt(newPosition);
+            if (isNaN(newPosition) || newPosition < 1) newPosition = 1;
+            if (newPosition > tempOrder.length) newPosition = tempOrder.length;
+            
+            // Person in tempOrder verschieben
+            const currentIndex = tempOrder.findIndex(p => p.id === personId);
+            if (currentIndex === -1) return;
+            
+            const person = tempOrder.splice(currentIndex, 1)[0];
+            tempOrder.splice(newPosition - 1, 0, person);
+            
+            // Alle Eingabefelder aktualisieren
+            tempOrder.forEach((person, index) => {
+                const input = document.getElementById(`order-${person.id}`);
+                if (input) {
+                    input.value = index + 1;
+                }
+            });
+        }
+
+        // Reihenfolge speichern
+        function saveOrder() {
+            // tempOrder als neue Reihenfolge übernehmen
+            persons = [...tempOrder];
+            
+            saveData();
+            renderNamesList();
+            closeOrderEditor();
+        }
+
+        // Einzelne Position ändern
+        function changeOrder(personId) {
+            const newPosition = prompt(`Neue Position für diese Person (1-${persons.length}):`);
+            if (newPosition === null) return;
+            
+            const position = parseInt(newPosition);
+            if (isNaN(position) || position < 1 || position > persons.length) {
+                alert(`Bitte eine Zahl zwischen 1 und ${persons.length} eingeben!`);
+                return;
+            }
+            
+            const currentIndex = persons.findIndex(p => p.id === personId);
+            if (currentIndex === -1) return;
+            
+            const person = persons.splice(currentIndex, 1)[0];
+            persons.splice(position - 1, 0, person);
+            
+            saveData();
+            renderNamesList();
+        }
+
+        // Reihenfolge-Editor schließen
+        function closeOrderEditor() {
+            document.getElementById('order-modal').style.display = 'none';
+            document.getElementById('order-overlay').style.display = 'none';
+        }
+
+        // Person bearbeiten
+        function editPerson(personId) {
+            const person = persons.find(p => p.id === personId);
+            
+            if (person) {
+                currentEditId = personId;
+                document.getElementById('name-input').value = person.name;
+                document.getElementById('script-input').value = person.script;
+                document.getElementById('form-title').textContent = '✎ Person bearbeiten';
+                document.getElementById('submit-btn').textContent = 'Änderungen speichern';
+                document.getElementById('cancel-btn').style.display = 'inline-block';
+                
+                // Fehlermeldungen ausblenden
+                hideErrorMessages();
+                
+                document.getElementById('name-input').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('name-input').focus();
+            }
+        }
+
+        // Bearbeitung abbrechen
+        function cancelEdit() {
+            currentEditId = null;
+            document.getElementById('name-input').value = '';
+            document.getElementById('script-input').value = '';
+            document.getElementById('form-title').textContent = '➕ Neue Person hinzufügen';
+            document.getElementById('submit-btn').textContent = 'Person hinzufügen';
+            document.getElementById('cancel-btn').style.display = 'none';
+            
+            // Fehlermeldungen ausblenden
+            hideErrorMessages();
+        }
+
+        // Fehlermeldungen ausblenden
+        function hideErrorMessages() {
+            document.getElementById('name-error').style.display = 'none';
+            document.getElementById('script-error').style.display = 'none';
+        }
+
+        // Neue Person hinzufügen oder bearbeiten
+        function addPerson() {
+            const nameInput = document.getElementById('name-input');
+            const scriptInput = document.getElementById('script-input');
+            
+            const name = nameInput.value.trim();
+            const script = scriptInput.value.trim();
+            
+            // Validierung
+            let isValid = true;
+            
+            if (!name) {
+                document.getElementById('name-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('name-error').style.display = 'none';
+            }
+            
+            if (!script) {
+                document.getElementById('script-error').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('script-error').style.display = 'none';
+            }
+            
+            if (!isValid) {
+                return;
+            }
+            
+            if (currentEditId) {
+                // Bearbeiten
+                const personIndex = persons.findIndex(p => p.id === currentEditId);
+                if (personIndex !== -1) {
+                    persons[personIndex].name = name;
+                    persons[personIndex].script = script;
+                }
+            } else {
+                // Neue Person
+                const newPerson = {
+                    id: Date.now(),
+                    name: name,
+                    script: script,
+                    recordings: []
+                };
+                persons.push(newPerson);
+            }
+            
+            saveData();
+            renderNamesList();
+            cancelEdit();
+        }
+
+        // Person löschen
+        function deletePerson(personId) {
+            if (confirm('Möchtest du diese Person wirklich löschen?')) {
+                persons = persons.filter(p => p.id !== personId);
+                saveData();
+                renderNamesList();
+                closeModal();
+            }
+        }
+
+        // Personenzahl aktualisieren
+        function updatePersonCount() {
+            document.getElementById('person-count').textContent = persons.length;
+        }
+
+        // Daten speichern
+        function saveData() {
+            try {
+                localStorage.setItem('moderationPersons', JSON.stringify(persons));
+            } catch (e) {
+                console.error('Fehler beim Speichern der Daten:', e);
+                setSyncStatus('Fehler beim Speichern', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
