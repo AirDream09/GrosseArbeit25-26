@@ -34,7 +34,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: var(--bg-secondary);
             border-radius: 15px;
@@ -45,31 +45,101 @@
         header {
             background: var(--bg-tertiary);
             color: var(--text-primary);
-            padding: 30px;
-            text-align: center;
+            padding: 20px;
             border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 2em;
             background: linear-gradient(135deg, var(--accent), #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
+        .mode-switcher {
+            display: flex;
+            gap: 10px;
+        }
+
+        .mode-btn {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
         .main-content {
             display: flex;
-            min-height: 600px;
-            position: relative;
+            min-height: 700px;
         }
 
-        .names-section {
+        .sidebar {
+            width: 300px;
+            background: var(--bg-tertiary);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+        }
+
+        .content-area {
             flex: 1;
             padding: 20px;
-            border-right: 1px solid var(--border);
         }
 
+        /* Ordner Styles */
+        .folder {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .folder:hover {
+            border-color: var(--accent);
+            background: var(--bg-primary);
+        }
+
+        .folder.active {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .folder-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .folder-name {
+            font-weight: 500;
+        }
+
+        .folder-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .folder-item-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* Namen Liste Styles */
         .section-title {
             color: var(--text-primary);
             margin-bottom: 20px;
@@ -82,6 +152,9 @@
 
         #names-list {
             min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 20px;
         }
 
         .name-item {
@@ -94,12 +167,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
         }
 
         .name-item:hover {
             border-color: var(--accent);
             background: var(--bg-secondary);
+        }
+
+        .name-item.selected {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
         }
 
         .name-item-number {
@@ -126,6 +203,7 @@
 
         .name-text {
             font-weight: 500;
+            font-size: 16px;
         }
 
         .name-actions {
@@ -133,7 +211,47 @@
             gap: 5px;
         }
 
-        .edit-btn, .delete-btn, .order-btn, .record-btn {
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-success {
+            background: var(--success);
+        }
+
+        .btn-success:hover {
+            background: #0da271;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .action-btn {
             background: transparent;
             color: var(--text-secondary);
             border: 1px solid var(--border);
@@ -144,38 +262,49 @@
             transition: all 0.2s ease;
         }
 
-        .edit-btn:hover {
-            background: var(--success);
-            border-color: var(--success);
-            color: white;
-        }
-
-        .delete-btn:hover {
-            background: var(--danger);
-            border-color: var(--danger);
-            color: white;
-        }
-
-        .order-btn:hover {
-            background: var(--warning);
-            border-color: var(--warning);
-            color: white;
-        }
-
-        .record-btn:hover {
+        .action-btn:hover {
             background: var(--accent);
             border-color: var(--accent);
             color: white;
         }
 
-        .record-btn.recording {
-            background: var(--danger);
-            border-color: var(--danger);
-            color: white;
-            animation: pulse 1.5s infinite;
+        /* Audio Recorder */
+        .audio-recorder {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
         }
 
-        /* Script Modal */
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .recording {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 999;
+        }
+
         .script-modal {
             display: none;
             position: fixed;
@@ -187,7 +316,7 @@
             border-radius: 15px;
             padding: 0;
             width: 90%;
-            max-width: 700px;
+            max-width: 800px;
             max-height: 80vh;
             z-index: 1000;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
@@ -222,176 +351,15 @@
             justify-content: center;
         }
 
-        .close-btn:hover {
-            background: #dc2626;
-        }
-
         .modal-content {
             padding: 25px;
             max-height: 60vh;
             overflow-y: auto;
         }
 
-        #modal-script {
-            white-space: pre-wrap;
-            line-height: 1.6;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .audio-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
-            padding: 15px;
-            background: var(--bg-tertiary);
-            border-radius: 8px;
-        }
-
-        .audio-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .audio-section-title {
-            font-weight: bold;
-            color: var(--text-primary);
-            margin-bottom: 5px;
-        }
-
-        .audio-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .audio-visualizer {
-            height: 60px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
-            margin: 10px 0;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .visualizer-bars {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            height: 100%;
-            padding: 0 10px;
-        }
-
-        .visualizer-bar {
-            width: 6px;
-            background: var(--accent);
-            border-radius: 3px;
-            transition: height 0.1s ease;
-        }
-
-        .recording-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--danger);
-            font-weight: bold;
-        }
-
-        .recording-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--danger);
-            animation: pulse 1.5s infinite;
-        }
-
-        .recording-timer {
-            font-family: monospace;
-            font-size: 1.1em;
-        }
-
-        .audio-player {
-            width: 100%;
-            margin: 10px 0;
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 999;
-        }
-
-        /* Order Modal */
-        .order-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--bg-secondary);
-            border: 2px solid var(--warning);
-            border-radius: 15px;
-            padding: 0;
-            width: 90%;
-            max-width: 500px;
-            z-index: 1002;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-
-        .order-item {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg-tertiary);
-            margin: 5px;
-            border-radius: 8px;
-        }
-
-        .order-item:last-child {
-            border-bottom: none;
-        }
-
-        .order-number {
-            background: var(--warning);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 15px;
-            flex-shrink: 0;
-        }
-
-        .order-name {
-            flex: 1;
-            font-weight: 500;
-        }
-
-        .order-input {
-            width: 80px;
-            padding: 8px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            color: var(--text-primary);
-            text-align: center;
-            margin-left: 10px;
-        }
-
         /* Form Styles */
-        .add-name-form {
-            margin-top: 30px;
+        .add-name-form, .folder-form {
+            margin-top: 20px;
             padding: 20px;
             background: var(--bg-tertiary);
             border-radius: 10px;
@@ -409,7 +377,7 @@
             color: var(--text-primary);
         }
 
-        input, textarea {
+        input, textarea, select {
             width: 100%;
             padding: 12px;
             background: var(--bg-secondary);
@@ -420,55 +388,15 @@
             transition: border-color 0.3s ease;
         }
 
-        input:focus, textarea:focus {
+        input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: var(--accent);
         }
 
         textarea {
             resize: vertical;
-            min-height: 120px;
+            min-height: 100px;
             font-family: inherit;
-        }
-
-        .btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s ease;
-            margin-right: 10px;
-        }
-
-        .btn:hover {
-            background: var(--accent-hover);
-        }
-
-        .btn-success {
-            background: var(--success);
-        }
-
-        .btn-success:hover {
-            background: #0da271;
-        }
-
-        .btn-warning {
-            background: var(--warning);
-        }
-
-        .btn-warning:hover {
-            background: #d97706;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
         }
 
         .sync-status {
@@ -481,33 +409,6 @@
             justify-content: space-between;
             align-items: center;
             font-size: 14px;
-        }
-
-        .sync-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .sync-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            animation: pulse 2s infinite;
-        }
-
-        .sync-dot.syncing {
-            background: #f59e0b;
-        }
-
-        .sync-dot.error {
-            background: var(--danger);
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
         }
 
         .instructions {
@@ -526,44 +427,38 @@
             padding: 40px 20px;
         }
 
-        .reorder-btn {
-            background: var(--warning);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .export-section {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
         }
 
-        .reorder-btn:hover {
-            background: #d97706;
-        }
-
-        .error-message {
-            color: var(--danger);
-            font-size: 0.9em;
-            margin-top: 5px;
-            display: none;
-        }
-
-        .audio-item {
-            display: flex;
-            align-items: center;
+        /* Folder Selection Modal */
+        .folder-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 10px;
-            margin: 5px 0;
-            padding: 8px;
-            background: var(--bg-secondary);
-            border-radius: 4px;
+            margin: 15px 0;
         }
 
-        .audio-item-name {
-            flex: 1;
-            font-size: 0.9em;
+        .folder-option {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .folder-option:hover {
+            border-color: var(--accent);
+        }
+
+        .folder-option.selected {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
         }
 
         @media (max-width: 768px) {
@@ -571,18 +466,10 @@
                 flex-direction: column;
             }
             
-            .names-section {
+            .sidebar {
+                width: 100%;
                 border-right: none;
                 border-bottom: 1px solid var(--border);
-            }
-            
-            .audio-buttons {
-                flex-direction: column;
-            }
-            
-            .audio-buttons .btn {
-                width: 100%;
-                margin-bottom: 5px;
             }
         }
     </style>
@@ -591,57 +478,94 @@
     <div class="container">
         <header>
             <h1>🎤 Moderation Scripts</h1>
-            <p class="subtitle">Kollaborative Verwaltung von Moderationstexten mit Sprachaufnahmen</p>
+            <div class="mode-switcher">
+                <button class="mode-btn active" onclick="switchMode('normal')">📋 Normal</button>
+                <button class="mode-btn" onclick="switchMode('folder')">📁 Ordner</button>
+            </div>
         </header>
 
         <div class="sync-status">
-            <div class="sync-indicator">
-                <div class="sync-dot" id="sync-dot"></div>
+            <div>
                 <span id="sync-text">Lokaler Speicher</span>
             </div>
-            <button class="btn" onclick="forceSync()">🔄 Sync erzwingen</button>
+            <button class="btn" onclick="forceSync()">🔄 Sync</button>
         </div>
 
         <div class="instructions">
             <strong>💡 Anleitung:</strong> 
-            • Klicke auf einen Namen, um das Script im Fenster zu sehen<br>
-            • Bearbeite Namen und Scripts mit dem ✎ Button<br>
-            • Verwende das 🎤 Symbol, um Sprachaufnahmen zu erstellen<br>
-            • Ändere die Reihenfolge mit dem 📋 Button oder dem Reihenfolge-Editor<br>
-            • Änderungen werden für alle Nutzer synchronisiert
+            <span id="mode-instructions">
+                • Klicke auf Namen für Scripts • Bearbeiten mit ✎ • Reihenfolge mit 🔢 • Ordner mit 📁
+            </span>
         </div>
 
         <div class="main-content">
-            <div class="names-section">
-                <h2 class="section-title">
-                    Personen
-                    <span style="font-size: 0.8em; color: var(--text-secondary);">
-                        (Anzahl: <span id="person-count">0</span>)
-                    </span>
-                </h2>
-
-                <button class="reorder-btn" onclick="openOrderEditor()">
-                    📋 Reihenfolge bearbeiten
+            <!-- Sidebar für Ordner-Modus -->
+            <div class="sidebar" id="sidebar" style="display: none;">
+                <h3>📁 Ordner</h3>
+                <button class="btn btn-success" onclick="showAllFolders()" id="all-folders-btn" style="margin-bottom: 15px; width: 100%;">
+                    📋 Alle Ordner anzeigen
                 </button>
-                
-                <div id="names-list">
-                    <!-- Namen werden hier dynamisch eingefügt -->
+                <div id="folders-list">
+                    <!-- Ordner werden hier dynamisch eingefügt -->
                 </div>
+                
+                <div class="folder-form">
+                    <h4>Neuer Ordner</h4>
+                    <div class="form-group">
+                        <input type="text" id="folder-name-input" placeholder="Ordnername">
+                    </div>
+                    <button class="btn btn-success" onclick="createFolder()">📁 Ordner erstellen</button>
+                </div>
+            </div>
 
-                <div class="add-name-form">
-                    <h3 style="margin-bottom: 15px;" id="form-title">➕ Neue Person hinzufügen</h3>
-                    <div class="form-group">
-                        <label for="name-input">Name:</label>
-                        <input type="text" id="name-input" placeholder="Name der Person">
-                        <div class="error-message" id="name-error">Bitte geben Sie einen Namen ein</div>
+            <!-- Hauptbereich -->
+            <div class="content-area">
+                <div class="names-section">
+                    <h2 class="section-title">
+                        <span id="content-title">Personen</span>
+                        <span style="font-size: 0.8em; color: var(--text-secondary);">
+                            (Anzahl: <span id="person-count">0</span>)
+                        </span>
+                    </h2>
+
+                    <div id="normal-controls">
+                        <button class="btn btn-warning" onclick="openOrderEditor()">
+                            📋 Reihenfolge bearbeiten
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="script-input">Moderation Script:</label>
-                        <textarea id="script-input" placeholder="Moderationstext für diese Person..."></textarea>
-                        <div class="error-message" id="script-error">Bitte geben Sie ein Script ein</div>
+
+                    <div id="folder-controls" style="display: none;">
+                        <button class="btn" onclick="showAllFolders()" id="back-to-folders">⬅️ Zurück zu allen Ordnern</button>
+                        <button class="btn btn-success" onclick="moveToFolder()">📂 In Ordner verschieben</button>
+                        <button class="btn" onclick="removeFromFolder()">📤 Aus Ordner entfernen</button>
                     </div>
-                    <button class="btn btn-success" onclick="addPerson()" id="submit-btn">Person hinzufügen</button>
-                    <button class="btn" onclick="cancelEdit()" id="cancel-btn" style="display: none;">Abbrechen</button>
+                    
+                    <div id="names-list">
+                        <!-- Namen werden hier dynamisch eingefügt -->
+                    </div>
+
+                    <!-- Export Section -->
+                    <div class="export-section">
+                        <h4>📊 Export</h4>
+                        <button class="btn btn-success" onclick="exportToExcel()">📈 Excel exportieren</button>
+                        <button class="btn" onclick="exportToJSON()">📁 Backup exportieren</button>
+                        <button class="btn" onclick="importFromJSON()">📥 Backup importieren</button>
+                    </div>
+
+                    <!-- Add Person Form -->
+                    <div class="add-name-form">
+                        <h3 id="form-title">➕ Neue Person hinzufügen</h3>
+                        <div class="form-group">
+                            <label for="name-input">Name:</label>
+                            <input type="text" id="name-input" placeholder="Name der Person">
+                        </div>
+                        <div class="form-group">
+                            <label for="script-input">Moderation Script:</label>
+                            <textarea id="script-input" placeholder="Moderationstext für diese Person..."></textarea>
+                        </div>
+                        <button class="btn btn-success" onclick="addPerson()" id="submit-btn">Person hinzufügen</button>
+                        <button class="btn" onclick="cancelEdit()" id="cancel-btn" style="display: none;">Abbrechen</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -655,165 +579,494 @@
             <button class="close-btn" onclick="closeModal()">×</button>
         </div>
         <div class="modal-content">
-            <div id="modal-script"></div>
-            
-            <div class="audio-controls">
-                <div class="audio-section">
-                    <div class="audio-section-title">Sprachaufnahmen</div>
-                    
-                    <div class="recording-indicator" id="recording-indicator" style="display: none;">
-                        <div class="recording-dot"></div>
-                        <span>Aufnahme läuft...</span>
-                        <span class="recording-timer" id="recording-timer">00:00</span>
-                    </div>
-                    
-                    <div class="audio-visualizer" id="audio-visualizer" style="display: none;">
-                        <div class="visualizer-bars" id="visualizer-bars"></div>
-                    </div>
-                    
-                    <div class="audio-buttons">
-                        <button class="btn" id="start-record-btn" onclick="startRecording()">🎤 Aufnahme starten</button>
-                        <button class="btn btn-danger" id="stop-record-btn" onclick="stopRecording()" style="display: none;">⏹️ Aufnahme stoppen</button>
-                        <button class="btn btn-success" id="play-audio-btn" onclick="playRecording()" style="display: none;">▶️ Aufnahme abspielen</button>
-                        <button class="btn btn-warning" id="delete-audio-btn" onclick="deleteRecording()" style="display: none;">🗑️ Aufnahme löschen</button>
-                    </div>
-                    
-                    <div id="audio-player-container" style="display: none;">
-                        <audio controls class="audio-player" id="audio-player"></audio>
-                    </div>
-                    
-                    <div id="saved-recordings">
-                        <!-- Gespeicherte Aufnahmen werden hier angezeigt -->
-                    </div>
+            <div id="modal-script" style="white-space: pre-wrap; line-height: 1.6; margin-bottom: 20px; padding: 15px; background: var(--bg-tertiary); border-radius: 8px;"></div>
+            <div class="audio-recorder">
+                <h4>🎵 Audio-Aufnahme</h4>
+                <div class="audio-controls">
+                    <button class="btn" id="start-record">⏺️ Aufnahme starten</button>
+                    <button class="btn btn-danger" id="stop-record" style="display: none;">⏹️ Stopp</button>
+                    <audio id="audio-playback" controls style="display: none;"></audio>
+                    <button class="btn btn-success" id="save-audio" style="display: none;">💾 Audio speichern</button>
+                </div>
+                <div id="audio-list">
+                    <!-- Gespeicherte Audios werden hier angezeigt -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Order Editor Modal -->
-    <div class="modal-overlay" id="order-overlay" onclick="closeOrderEditor()"></div>
-    <div class="order-modal" id="order-modal">
+    <!-- Folder Selection Modal -->
+    <div class="modal-overlay" id="folder-modal-overlay" onclick="closeFolderModal()"></div>
+    <div class="script-modal" id="folder-modal">
         <div class="modal-header">
-            <div class="modal-title">📋 Reihenfolge bearbeiten</div>
-            <button class="close-btn" onclick="closeOrderEditor()">×</button>
+            <div class="modal-title" id="folder-modal-title">Zu Ordner hinzufügen</div>
+            <button class="close-btn" onclick="closeFolderModal()">×</button>
         </div>
         <div class="modal-content">
-            <div id="order-list">
-                <!-- Order items werden hier dynamisch eingefügt -->
+            <p>Wähle die Ordner aus, zu denen diese Person hinzugefügt werden soll:</p>
+            <div class="folder-selection" id="folder-selection">
+                <!-- Ordner werden hier dynamisch eingefügt -->
             </div>
             <div style="margin-top: 20px; text-align: center;">
-                <button class="btn btn-success" onclick="saveOrder()">Reihenfolge speichern</button>
-                <button class="btn" onclick="closeOrderEditor()">Abbrechen</button>
+                <button class="btn btn-success" onclick="saveFolderSelection()">Hinzufügen</button>
+                <button class="btn" onclick="closeFolderModal()">Abbrechen</button>
             </div>
         </div>
     </div>
 
     <script>
+        // KOMPLETTE DATEN MIT ALLEN 37 NAMEN
+        const DEFAULT_EXCEL_DATA = [
+            { id: 1, name: "Jaden", script: "[Name hier einfügen] wir wissen ja alle, das Jaden ein Riesen Taylor Swift Fan ist… Die Idee seiner GA kam ihm beim Hören von New Romantics von Taylor Swift bei der line: It's poker\nHe can't see it in my face\nBut I'm about to play my Ace (ah) // Pokerface Lady Gaga" },
+            { id: 2, name: "Daniil", script: "Bro du bist ja vorhin mit dem Aufzug gefahren und jetzt ist der kaputt, zum Glück hat Daniil eine Treppe gebaut" },
+            { id: 3, name: "Sarah", script: "Keine Rezepte mehr - Familien Gerichte von Sarah familienrezepte nachkochen dann holt euch" },
+            { id: 4, name: "Alina", script: "Moderator 1: Du, sag mal, was ziehst du eigentlich zum Abschlussball an?\n\nModerator 2: Keine Ahnung, ich hab nix zum Anziehen …\n\nModerator 1: Dann mach's wie Alina – die hat ihr Kleid einfach selbst genäht!" },
+            { id: 5, name: "Ailis", script: "Moderator 1: Ich kann keine Hausaufgaben machen ohne Musik.\nModerator 2: Same! Zum Glück hat Ailis da was erfunden – einen Schreibtisch mit eingebauter Musikanlage!\nModerator 1: Also Lernen mit Beat – das wär endlich mal Motivation!\nModerator 2: Wenn da jetzt noch Snacks drin wären, würd ich nie wieder aufstehen." },
+            { id: 6, name: "Samed", script: "Moderator 1: Weißt du, was Samed in seiner Freizeit am liebsten macht?\n\nModerator 2: Lass mich raten: Okey spielen!\n\nModerator 1: Genau – und weil ihm das nicht genug war, hat er einfach sein eigenes gebaut!" },
+            { id: 7, name: "Maji", script: "Moderator 1: Maji wollte Fußball, aber ein bisschen cooler.\n\nModerator 2: Ja, also nicht nur Kicken – sondern mit Technik!\n\nModerator 1: Deshalb hat er eine elektrische Torwand gebaut – mit Licht und allem drum und dran." },
+            { id: 8, name: "Phillip", script: "Moderator 1: Phillip hat sich gedacht: Fahrradfahren kann jeder.\n\nModerator 2: Stimmt, aber cool aussehen beim Fahren? Das ist die Kunst!\n\nModerator 1: Deswegen hat er sein Fahrrad komplett umgebaut – Slopeduro-Style!\n\nModerator 2: Sieht so schnell aus, selbst wenn's steht. Ich glaub, ich brauch auch so eins!" },
+            { id: 9, name: "Gustav", script: "Moderator 1: Kennst du die Geschichte mit dem Schachbrett und den Reiskörnern?\n\nModerator 2: Äh… nein, aber klingt kompliziert.\n\nModerator 1: Egal, Gustav hat wenigstens das Schachbrett gebaut – und das reicht völlig.\n\nModerator 2: Ja, und gegen ihn zu gewinnen, ist wahrscheinlich schwerer als Mathe." },
+            { id: 10, name: "Julius", script: "Moderator 1: Ich brauch mal wieder Bewegung.\n\nModerator 2: Dann geh zu Julius! Der hat nämlich ein richtig cooles Parcours-Hindernis gebaut.\n\nModerator 1: Also rennen, springen, klettern – alles erlaubt!" },
+            { id: 11, name: "Lea", script: "Moderator 1: Wenn du an Street-Art denkst, denkst du an Lea!\n\nModerator 2: Sie hat nämlich eine Graffiti-Holzplatte mit eigenem Design gemacht.\n\nModerator 1: Farben, Bubbles, Style – alles drin!\n\nModerator 2: Banksy wäre neidisch, sag ich dir." },
+            { id: 12, name: "Julia", script: "Moderator 1: Julia hatte morgens immer ein Problem.\n\nModerator 2: Zu wenig Platz für Schminke?\n\nModerator 1: Genau – also hat sie sich einfach ihren eigenen Schminktisch gebaut.\n\nModerator 2: Stylisch UND praktisch – das nenn ich Selbsthilfe!" },
+            { id: 13, name: "Anna", script: "Moderator 1: Monopoly ist dir zu langweilig?\n\nModerator 2: Total – aber Anna hat's magischer gemacht!\n\nModerator 1: Mit Zaubersprüchen, Hogwarts und Würfeln voller Magie!\n\nModerator 2: Ich hoffe, man kann da nicht in Askaban landen, statt ins Gefängnis." },
+            { id: 14, name: "Mathilda", script: "Moderator 1: Mathilda hat beim Umzug festgestellt: Es fehlt was!\n\nModerator 2: Lass mich raten – ein Couchtisch?\n\nModerator 1: Genau. Also hat sie einfach selbst einen gegossen – mit Epoxidharz!\n\nModerator 2: Glänzend, stylisch und wahrscheinlich teurer als meiner zuhause." },
+            { id: 15, name: "Emma", script: "Moderator 1: Dir ist kalt?\n\nModerator 2: Immer!\n\nModerator 1: Kein Problem – Emma hat eine Decke gehäkelt, und dazu noch Rosen gemacht!\n\nModerator 2: Die Frau hat's drauf – warm und schön gleichzeitig!" },
+            { id: 16, name: "Jonathan", script: "Moderator 1: Das Lowboard von Jonathan ist so niedrig...\n\nModerator 2: ...wie das Niveau unserer Witze! 😂\n\nModerator 1: Aber hey, sieht gut aus – und man kann nix mehr drunter verlieren!\n\nModerator 2: Praktisch UND cool – gefällt mir!" },
+            { id: 17, name: "Gerlach", script: "Moderator 1: Ständig dem Ball hinterherlaufen nervt, oder?\n\nModerator 2: Total!\n\nModerator 1: Gerlach hat das Problem gelöst – mit seinem selbstgebauten Rebounder!\n\nModerator 2: Endlich kommt der Ball von allein zurück – mein Traum!" },
+            { id: 18, name: "Salomon", script: "Moderator 1: Salomon wollte schon immer zum Mond.\n\nModerator 2: Dann hat er einfach seine eigene Rakete gebaut!\n\nModerator 1: Aus Pappe, Bauschaum und ner Plastikflasche – DIY at its best.\n\nModerator 2: Ich hoffe nur, die startet nicht in der Turnhalle!" },
+            { id: 19, name: "Milena", script: "Moderator 1: Milena liest gern, aber dicke Bücher? Eher nicht.\n\nModerator 2: Deswegen hat sie 16 Kurzgeschichten geschrieben – kurz, spannend und perfekt fürs Sofa.\n\nModerator 1: Ich sag's dir, das wird noch Bestseller-Material!\n\nModerator 2: Dann will ich aber eine signierte Ausgabe!" },
+            { id: 20, name: "Benedikt", script: "Moderator 1: Wenn man die Vögel nicht findet...\n\nModerator 2: ...dann baut man ihnen halt ein Zuhause!\n\nModerator 1: Benedikt hat ein richtig schönes Vogelhaus gebaut.\n\nModerator 2: Airbnb für Spatzen – sehr nachhaltig!" },
+            { id: 21, name: "Karin", script: "Moderator 1: Kein Outfit passt?\n\nModerator 2: Dann näh dir halt eins – so wie Karin!\n\nModerator 1: Ihr Outfit ist komplett selbstgemacht – und sieht mega aus.\n\nModerator 2: Fashion-Queen, ganz klar!" },
+            { id: 22, name: "Angelika", script: "Moderator 1: Batman kennst du, oder?\n\nModerator 2: Klar! Aber Angelikas Version ist sogar besser.\n\nModerator 1: Sie hat ihren eigenen Comic gemacht – mit Humor, Action und Style.\n\nModerator 2: Also quasi Superheldin hinterm Zeichenblock!" },
+            { id: 23, name: "Lamies", script: "Moderator 1: Kein Kleid gefunden?\n\nModerator 2: Dann mach dein eigenes!\n\nModerator 1: Genau das hat Lamies gemacht – ein Ballkleid genäht, das richtig was hermacht!\n\nModerator 2: Ich sag's dir, das ist rotteppichreif!" },
+            { id: 24, name: "Oskar", script: "Moderator 1: Oskar hat mal wieder gebastelt – aus Autoteilen!\n\nModerator 2: Moment, Deko aus Autoteilen?\n\nModerator 1: Ja! Recycling trifft auf Design – sieht echt cool aus.\n\nModerator 2: Dann ist das wohl die einzige Stoßstange, die ich ins Zimmer stellen würde!" },
+            { id: 25, name: "Magdalena", script: "Moderator 1: Keramik ist teuer, oder?\n\nModerator 2: Kommt drauf an, wo du's kaufst – oder ob du's selbst machst!\n\nModerator 1: Genau das hat Magdalena gemacht – und richtig schöne Stücke gezaubert.\n\nModerator 2: Handmade und mega edel – Daumen hoch!" },
+            { id: 26, name: "Constantin", script: "Moderator 1: Constantin muss immer zum Tennistraining – aber wie?\n\nModerator 2: Mit Stil natürlich!\n\nModerator 1: Deshalb hat er sein Mountainbike restauriert – jetzt ist's schneller als je zuvor.\n\nModerator 2: Ich sag dir, Tour de France kann kommen!" },
+            { id: 27, name: "Emil", script: "Moderator 1: Emil hatte Langeweile...\n\nModerator 2: ...also hat er einfach eine Boulderwand gebaut!\n\nModerator 1: Perfekt zum Klettern und Austoben.\n\nModerator 2: Ich würd ja mitmachen, aber meine Arme sagen nein." },
+            { id: 28, name: "Zoe", script: "Moderator 1: Schmuck ist teuer, oder?\n\nModerator 2: Joa, wenn man ihn kauft schon – Zoe macht ihn einfach selbst!\n\nModerator 1: Glitzer, Stil und Kreativität in einem – DIY vom Feinsten.\n\nModerator 2: Ich bestell schon mal eins für meine Mutter!" },
+            { id: 29, name: "Anna", script: "Moderator 1: Kennst du Picasso?\n\nModerator 2: Nur vom Namen – aber ich kenn Annas Gemälde!\n\nModerator 1: Eigen, farbenfroh, künstlerisch – einfach Kunst mit Persönlichkeit.\n\nModerator 2: Ich würd's mir direkt ins Zimmer hängen." },
+            { id: 30, name: "Enio", script: "Moderator 1: Enio hat sich mit Van Gogh beschäftigt – und selbst gemalt!\n\nModerator 2: Sonnenblumen inklusive?\n\nModerator 1: Natürlich – und ganz viel Kreativität obendrauf.\n\nModerator 2: Das ist Kunst mit Herz – oder besser: mit Pinsel!" },
+            { id: 31, name: "Estella", script: "Moderator 1: Estella hatte eine Mission: Sicherheit für alle!\n\nModerator 2: Und deswegen hat sie ein Selbstverteidigungsbuch geschrieben.\n\nModerator 1: Stark, mutig und mega wichtig – da steckt Power drin.\n\nModerator 2: Also ich fühl mich jetzt schon sicherer!" },
+            { id: 32, name: "Elias", script: "Noch kein Script vorhanden..." },
+            { id: 33, name: "Felix", script: "Moderator 1: Felix spielt seit sechs Jahren Gitarre – aber einfach spielen reicht ihm nicht.\n\nModerator 2: Nee, er hat sich gleich eine E-Gitarre selbst gebaut!\n\nModerator 1: Rock'n'Roll pur!\n\nModerator 2: Wenn er jetzt noch spielt, fliegen die Noten durchs Dach!" },
+            { id: 34, name: "Hugo", script: "Moderator 1: Schach ist zu langweilig?\n\nModerator 2: Nicht mit Hugo!\n\nModerator 1: Der hat nämlich sein eigenes Schachbrett gebaut – richtig schick.\n\nModerator 2: Und wer verliert, muss aufräumen!" },
+            { id: 35, name: "Said", script: "Moderator 1: Durst?\n\nModerator 2: Immer!\n\nModerator 1: Dann geh zu Said – der hat eine Bar aus Paletten gebaut!\n\nModerator 2: Nachhaltig, cool und perfekt für jede Gartenparty." },
+            { id: 36, name: "Illias Baskici", script: "Moderator 1: Pizza bestellen war gestern!\n\nModerator 2: Illias hat seinen eigenen Pizzaofen gebaut!\n\nModerator 1: Ich riech's schon, das ist Italien pur!\n\nModerator 2: Jetzt fehlt nur noch der Lieferservice!" },
+            { id: 37, name: "Marie", script: "Moderator 1: Marie hat sich eine Katze geholt.\n\nModerator 2: Awww! Und was braucht die?\n\nModerator 1: Einen Kratzbaum natürlich – den hat Marie selbst gebaut!\n\nModerator 2: Stylisch, stabil und katzengeprüft – miauu!" }
+        ];
+
         // Datenstruktur
         let persons = [];
+        let folders = [];
         let currentEditId = null;
-        let tempOrder = [];
-        let currentPersonId = null;
-        
-        // Audio-Aufnahme Variablen
+        let currentMode = 'normal';
+        let currentFolderId = null;
+        let currentAudioPersonId = null;
         let mediaRecorder = null;
         let audioChunks = [];
-        let audioBlob = null;
-        let audioURL = null;
-        let recordingTimer = null;
-        let recordingStartTime = null;
-        let audioContext = null;
-        let analyser = null;
-        let visualizationInterval = null;
+        let currentFolderSelectionPersonId = null;
+        let selectedFoldersForPerson = [];
 
         // Initialisierung
         document.addEventListener('DOMContentLoaded', function() {
             loadFromLocalStorage();
-            
-            // Enter-Taste für Formular
-            document.getElementById('name-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    addPerson();
-                }
-            });
-            
-            // ESC Taste zum Schließen der Modals
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeModal();
-                    closeOrderEditor();
-                    if (currentEditId) {
-                        cancelEdit();
-                    }
-                }
-            });
-            
-            // Visualizer-Bars vorbereiten
-            initVisualizer();
+            setupAudioRecording();
         });
 
-        // Visualizer initialisieren
-        function initVisualizer() {
-            const visualizerBars = document.getElementById('visualizer-bars');
-            visualizerBars.innerHTML = '';
-            for (let i = 0; i < 20; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'visualizer-bar';
-                bar.style.height = '5px';
-                visualizerBars.appendChild(bar);
-            }
-        }
-
-        // Lokalen Speicher laden
-        function loadFromLocalStorage() {
-            const localData = localStorage.getItem('moderationPersons');
-            if (localData) {
-                try {
-                    persons = JSON.parse(localData);
-                } catch (e) {
-                    console.error('Fehler beim Laden der Daten:', e);
-                    persons = [];
-                }
+        // Modus wechseln
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // Buttons aktualisieren
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Elemente anzeigen/verstecken
+            const sidebar = document.getElementById('sidebar');
+            const normalControls = document.getElementById('normal-controls');
+            const folderControls = document.getElementById('folder-controls');
+            const contentTitle = document.getElementById('content-title');
+            const instructions = document.getElementById('mode-instructions');
+            
+            if (mode === 'folder') {
+                sidebar.style.display = 'block';
+                normalControls.style.display = 'none';
+                folderControls.style.display = 'block';
+                contentTitle.textContent = 'Personen im Ordner';
+                instructions.textContent = '• Wähle einen Ordner • Markiere Personen • Verschiebe mit Buttons';
+                showAllFolders();
             } else {
-                // Beispieldaten
-                persons = [
-                    {
-                        id: 1,
-                        name: "Max Mustermann",
-                        script: "Guten Abend, meine Damen und Herren!\n\nWillkommen zu unserer heutigen Veranstaltung.",
-                        recordings: []
-                    },
-                    {
-                        id: 2,
-                        name: "Anna Schmidt", 
-                        script: "Herzlich willkommen liebe Gäste!\n\nEs ist mir eine große Freude...",
-                        recordings: []
-                    }
-                ];
-                saveData();
+                sidebar.style.display = 'none';
+                normalControls.style.display = 'block';
+                folderControls.style.display = 'none';
+                contentTitle.textContent = 'Personen';
+                instructions.textContent = '• Klicke auf Namen für Scripts • Bearbeiten mit ✎ • Reihenfolge mit 🔢 • Ordner mit 📁';
             }
             renderNamesList();
-            setSyncStatus('Lokaler Speicher', 'synced');
         }
 
-        // Sync Status anzeigen
-        function setSyncStatus(text, status) {
-            const dot = document.getElementById('sync-dot');
-            const textEl = document.getElementById('sync-text');
+        // Alle Ordner anzeigen (zurück zur Übersicht)
+        function showAllFolders() {
+            currentFolderId = null;
+            document.getElementById('content-title').textContent = 'Alle Ordner';
+            renderFolders();
+            renderNamesList();
+        }
+
+        // Ordner erstellen
+        function createFolder() {
+            const nameInput = document.getElementById('folder-name-input');
+            const name = nameInput.value.trim();
             
-            textEl.textContent = text;
-            dot.className = 'sync-dot';
-            if (status === 'syncing') dot.classList.add('syncing');
-            if (status === 'error') dot.classList.add('error');
+            if (!name) {
+                alert('Bitte gib einen Ordnernamen ein!');
+                return;
+            }
+            
+            const newFolder = {
+                id: Date.now(),
+                name: name,
+                personIds: []
+            };
+            
+            folders.push(newFolder);
+            saveData();
+            renderFolders();
+            nameInput.value = '';
+            alert('Ordner erstellt!');
         }
 
-        // Sync erzwingen
-        function forceSync() {
-            setSyncStatus('Synchronisiere...', 'syncing');
-            setTimeout(() => {
-                setSyncStatus('Lokaler Speicher', 'synced');
-            }, 1000);
+        // Ordner löschen
+        function deleteFolder(folderId) {
+            if (confirm('Möchtest du diesen Ordner wirklich löschen? Die Personen bleiben erhalten.')) {
+                folders = folders.filter(f => f.id !== folderId);
+                if (currentFolderId === folderId) {
+                    currentFolderId = null;
+                }
+                saveData();
+                renderFolders();
+                renderNamesList();
+            }
+        }
+
+        // Ordner auswählen
+        function selectFolder(folderId) {
+            currentFolderId = folderId;
+            const folder = folders.find(f => f.id === folderId);
+            document.getElementById('content-title').textContent = `Ordner: ${folder.name}`;
+            renderFolders();
+            renderNamesList();
+        }
+
+        // Ordner rendern
+        function renderFolders() {
+            const foldersList = document.getElementById('folders-list');
+            
+            if (folders.length === 0) {
+                foldersList.innerHTML = '<div class="empty-message">Noch keine Ordner</div>';
+                return;
+            }
+            
+            foldersList.innerHTML = folders.map(folder => `
+                <div class="folder ${currentFolderId === folder.id ? 'active' : ''}" 
+                     onclick="selectFolder(${folder.id})">
+                    <div class="folder-header">
+                        <div class="folder-name">📁 ${folder.name}</div>
+                        <div class="folder-actions">
+                            <button class="action-btn" onclick="event.stopPropagation(); deleteFolder(${folder.id})">×</button>
+                        </div>
+                    </div>
+                    <div class="folder-item-count">${folder.personIds.length} Personen</div>
+                </div>
+            `).join('');
+        }
+
+        // Zu Ordner hinzufügen - Modal öffnen
+        function addToFolder(personId) {
+            currentFolderSelectionPersonId = personId;
+            selectedFoldersForPerson = [];
+            
+            const folderSelection = document.getElementById('folder-selection');
+            folderSelection.innerHTML = folders.map(folder => `
+                <div class="folder-option" onclick="toggleFolderSelection(${folder.id})" id="folder-opt-${folder.id}">
+                    <div class="folder-name">📁 ${folder.name}</div>
+                    <div class="folder-item-count">${folder.personIds.length} Personen</div>
+                </div>
+            `).join('');
+            
+            document.getElementById('folder-modal-title').textContent = `"${persons.find(p => p.id === personId).name}" zu Ordnern hinzufügen`;
+            document.getElementById('folder-modal').style.display = 'block';
+            document.getElementById('folder-modal-overlay').style.display = 'block';
+        }
+
+        // Ordner-Auswahl umschalten
+        function toggleFolderSelection(folderId) {
+            const folderOption = document.getElementById(`folder-opt-${folderId}`);
+            const index = selectedFoldersForPerson.indexOf(folderId);
+            
+            if (index === -1) {
+                selectedFoldersForPerson.push(folderId);
+                folderOption.classList.add('selected');
+            } else {
+                selectedFoldersForPerson.splice(index, 1);
+                folderOption.classList.remove('selected');
+            }
+        }
+
+        // Ordner-Auswahl speichern
+        function saveFolderSelection() {
+            if (selectedFoldersForPerson.length === 0) {
+                alert('Bitte wähle mindestens einen Ordner aus!');
+                return;
+            }
+            
+            const person = persons.find(p => p.id === currentFolderSelectionPersonId);
+            if (person) {
+                selectedFoldersForPerson.forEach(folderId => {
+                    const folder = folders.find(f => f.id === folderId);
+                    if (folder && !folder.personIds.includes(person.id)) {
+                        folder.personIds.push(person.id);
+                    }
+                });
+                
+                saveData();
+                closeFolderModal();
+                if (currentMode === 'folder') renderFolders();
+                alert(`"${person.name}" zu ${selectedFoldersForPerson.length} Ordner(n) hinzugefügt!`);
+            }
+        }
+
+        // Ordner-Modal schließen
+        function closeFolderModal() {
+            document.getElementById('folder-modal').style.display = 'none';
+            document.getElementById('folder-modal-overlay').style.display = 'none';
+            currentFolderSelectionPersonId = null;
+            selectedFoldersForPerson = [];
+        }
+
+        // In Ordner verschieben (Ordner-Modus)
+        function moveToFolder() {
+            if (!currentFolderId) {
+                alert('Bitte wähle zuerst einen Ordner aus!');
+                return;
+            }
+            
+            const selectedPersons = persons.filter(p => p.selected);
+            if (selectedPersons.length === 0) {
+                alert('Bitte wähle zuerst Personen aus (klicke auf sie)!');
+                return;
+            }
+            
+            const folder = folders.find(f => f.id === currentFolderId);
+            selectedPersons.forEach(person => {
+                if (!folder.personIds.includes(person.id)) {
+                    folder.personIds.push(person.id);
+                }
+                person.selected = false;
+            });
+            
+            saveData();
+            renderNamesList();
+            renderFolders();
+            alert(`${selectedPersons.length} Personen in Ordner verschoben!`);
+        }
+
+        // Aus Ordner entfernen
+        function removeFromFolder() {
+            if (!currentFolderId) {
+                alert('Bitte wähle zuerst einen Ordner aus!');
+                return;
+            }
+            
+            const folder = folders.find(f => f.id === currentFolderId);
+            const selectedPersons = persons.filter(p => p.selected && folder.personIds.includes(p.id));
+            
+            if (selectedPersons.length === 0) {
+                alert('Bitte wähle Personen aus, die aus dem Ordner entfernt werden sollen!');
+                return;
+            }
+            
+            selectedPersons.forEach(person => {
+                folder.personIds = folder.personIds.filter(id => id !== person.id);
+                person.selected = false;
+            });
+            
+            saveData();
+            renderNamesList();
+            renderFolders();
+            alert(`${selectedPersons.length} Personen aus Ordner entfernt!`);
+        }
+
+        // Audio Recording einrichten
+        function setupAudioRecording() {
+            const startBtn = document.getElementById('start-record');
+            const stopBtn = document.getElementById('stop-record');
+            const saveBtn = document.getElementById('save-audio');
+            const audioPlayback = document.getElementById('audio-playback');
+
+            startBtn.addEventListener('click', async () => {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        audioPlayback.src = audioUrl;
+                        audioPlayback.style.display = 'block';
+                        saveBtn.style.display = 'block';
+                    };
+
+                    mediaRecorder.start();
+                    startBtn.style.display = 'none';
+                    stopBtn.style.display = 'block';
+                    startBtn.classList.add('recording');
+                } catch (error) {
+                    alert('Fehler beim Zugriff auf Mikrofon: ' + error.message);
+                }
+            });
+
+            stopBtn.addEventListener('click', () => {
+                if (mediaRecorder && mediaRecorder.state === 'recording') {
+                    mediaRecorder.stop();
+                    mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                    startBtn.style.display = 'block';
+                    stopBtn.style.display = 'none';
+                    startBtn.classList.remove('recording');
+                }
+            });
+
+            saveBtn.addEventListener('click', () => {
+                if (currentAudioPersonId && audioPlayback.src) {
+                    const person = persons.find(p => p.id === currentAudioPersonId);
+                    if (person) {
+                        if (!person.audio) person.audio = [];
+                        person.audio.push({
+                            id: Date.now(),
+                            url: audioPlayback.src,
+                            timestamp: new Date().toLocaleString()
+                        });
+                        saveData();
+                        renderAudioList();
+                        alert('Audio gespeichert!');
+                    }
+                }
+            });
+        }
+
+        // Audio-Liste rendern
+        function renderAudioList() {
+            const audioList = document.getElementById('audio-list');
+            const person = persons.find(p => p.id === currentAudioPersonId);
+            
+            if (!person || !person.audio || person.audio.length === 0) {
+                audioList.innerHTML = '<div class="empty-message">Noch keine Audio-Aufnahmen</div>';
+                return;
+            }
+            
+            audioList.innerHTML = person.audio.map(audio => `
+                <div class="audio-controls">
+                    <audio controls src="${audio.url}"></audio>
+                    <span style="font-size: 12px; color: var(--text-secondary);">${audio.timestamp}</span>
+                    <button class="action-btn" onclick="deleteAudio(${currentAudioPersonId}, ${audio.id})">Löschen</button>
+                    <button class="action-btn" onclick="downloadAudio('${audio.url}', '${person.name}_${audio.id}.wav')">Download</button>
+                </div>
+            `).join('');
+        }
+
+        function deleteAudio(personId, audioId) {
+            const person = persons.find(p => p.id === personId);
+            if (person && person.audio) {
+                person.audio = person.audio.filter(a => a.id !== audioId);
+                saveData();
+                renderAudioList();
+            }
+        }
+
+        function downloadAudio(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+        }
+
+        // Nach Excel exportieren - MIT ORDNERN!
+        function exportToExcel() {
+            let csvContent = "Name;Script;Ordner\n";
+            
+            persons.forEach(person => {
+                const name = person.name.replace(/;/g, ',');
+                const script = person.script.replace(/;/g, ',').replace(/\n/g, ' // ');
+                
+                // Finde alle Ordner, die diese Person enthalten
+                const personFolders = folders.filter(folder => 
+                    folder.personIds.includes(person.id)
+                ).map(folder => folder.name).join(', ');
+                
+                csvContent += `${name};${script};${personFolders}\n`;
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'moderation_scripts.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert('Excel-Datei wurde erstellt!');
+        }
+
+        // Nach JSON exportieren - MIT ORDNERN!
+        function exportToJSON() {
+            const data = {
+                persons: persons,
+                folders: folders,
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'moderation_backup.json';
+            link.click();
+        }
+
+        // Von JSON importieren
+        function importFromJSON() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        if (confirm('Möchtest du die aktuellen Daten mit der Backup-Datei ersetzen?')) {
+                            if (data.persons) persons = data.persons;
+                            if (data.folders) folders = data.folders;
+                            saveData();
+                            renderNamesList();
+                            if (currentMode === 'folder') renderFolders();
+                            alert('Daten erfolgreich importiert!');
+                        }
+                    } catch (error) {
+                        alert('Fehler beim Import: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
         }
 
         // Namenliste rendern
@@ -821,340 +1074,76 @@
             const namesList = document.getElementById('names-list');
             updatePersonCount();
             
-            if (persons.length === 0) {
-                namesList.innerHTML = '<div class="empty-message">Noch keine Personen vorhanden. Füge welche hinzu!</div>';
+            let displayPersons = persons;
+            
+            if (currentMode === 'folder' && currentFolderId) {
+                const folder = folders.find(f => f.id === currentFolderId);
+                displayPersons = persons.filter(p => folder.personIds.includes(p.id));
+            }
+            
+            if (displayPersons.length === 0) {
+                namesList.innerHTML = '<div class="empty-message">Noch keine Personen vorhanden</div>';
                 return;
             }
 
-            namesList.innerHTML = persons.map((person, index) => {
-                const hasRecording = person.recordings && person.recordings.length > 0;
-                return `
-                <div class="name-item" data-id="${person.id}" onclick="showScript(${person.id})" tabindex="0" role="button" aria-label="Script für ${person.name} anzeigen">
+            namesList.innerHTML = displayPersons.map((person, index) => `
+                <div class="name-item ${person.selected ? 'selected' : ''}" 
+                     data-id="${person.id}" 
+                     onclick="${currentMode === 'folder' ? `toggleSelect(${person.id})` : `showScript(${person.id})`}">
                     <div class="name-item-number">${index + 1}</div>
                     <div class="name-item-content">
-                        <span class="name-text">${person.name} ${hasRecording ? '🎵' : ''}</span>
+                        <span class="name-text">${person.name}</span>
                         <div class="name-actions">
-                            <button class="record-btn" onclick="event.stopPropagation(); showScript(${person.id}, true)" aria-label="Aufnahme für ${person.name}">🎤</button>
-                            <button class="order-btn" onclick="event.stopPropagation(); changeOrder(${person.id})" aria-label="Reihenfolge für ${person.name} ändern">🔢</button>
-                            <button class="edit-btn" onclick="event.stopPropagation(); editPerson(${person.id})" aria-label="${person.name} bearbeiten">✎</button>
-                            <button class="delete-btn" onclick="event.stopPropagation(); deletePerson(${person.id})" aria-label="${person.name} löschen">×</button>
+                            ${currentMode === 'folder' ? `
+                                <button class="action-btn" onclick="event.stopPropagation(); showScript(${person.id})">👁️</button>
+                            ` : `
+                                <button class="action-btn" onclick="event.stopPropagation(); changeOrder(${person.id})">🔢</button>
+                                <button class="action-btn" onclick="event.stopPropagation(); editPerson(${person.id})">✎</button>
+                                <button class="action-btn" onclick="event.stopPropagation(); addToFolder(${person.id})">📁</button>
+                            `}
+                            <button class="action-btn" onclick="event.stopPropagation(); deletePerson(${person.id})">×</button>
                         </div>
                     </div>
                 </div>
-                `;
-            }).join('');
+            `).join('');
+        }
+
+        // Auswahl umschalten (nur Ordner-Modus)
+        function toggleSelect(personId) {
+            const person = persons.find(p => p.id === personId);
+            if (person) {
+                person.selected = !person.selected;
+                renderNamesList();
+            }
         }
 
         // Script im Modal anzeigen
-        function showScript(personId, showAudioControls = false) {
+        function showScript(personId) {
             const person = persons.find(p => p.id === personId);
             
             if (person) {
-                currentPersonId = personId;
+                currentAudioPersonId = personId;
                 document.getElementById('modal-title').textContent = person.name;
                 document.getElementById('modal-script').textContent = person.script;
                 document.getElementById('script-modal').style.display = 'block';
                 document.getElementById('modal-overlay').style.display = 'block';
                 
-                // Audio-Controls anzeigen/verstecken
-                const audioControls = document.querySelector('.audio-controls');
-                audioControls.style.display = showAudioControls ? 'block' : 'none';
+                // Audio-Controls zurücksetzen
+                document.getElementById('start-record').style.display = 'block';
+                document.getElementById('stop-record').style.display = 'none';
+                document.getElementById('audio-playback').style.display = 'none';
+                document.getElementById('save-audio').style.display = 'none';
+                document.getElementById('start-record').classList.remove('recording');
                 
-                // Gespeicherte Aufnahmen anzeigen
-                displaySavedRecordings(personId);
-                
-                // Fokus auf den Schließen-Button setzen für Barrierefreiheit
-                document.querySelector('#script-modal .close-btn').focus();
+                renderAudioList();
             }
-        }
-
-        // Gespeicherte Aufnahmen anzeigen
-        function displaySavedRecordings(personId) {
-            const person = persons.find(p => p.id === personId);
-            const savedRecordingsContainer = document.getElementById('saved-recordings');
-            
-            if (!person.recordings || person.recordings.length === 0) {
-                savedRecordingsContainer.innerHTML = '<div class="empty-message">Keine Aufnahmen vorhanden</div>';
-                return;
-            }
-            
-            savedRecordingsContainer.innerHTML = '<div class="audio-section-title">Gespeicherte Aufnahmen:</div>';
-            
-            person.recordings.forEach((recording, index) => {
-                const recordingItem = document.createElement('div');
-                recordingItem.className = 'audio-item';
-                recordingItem.innerHTML = `
-                    <span class="audio-item-name">Aufnahme ${index + 1} (${new Date(recording.timestamp).toLocaleString()})</span>
-                    <button class="btn" onclick="playSavedRecording(${personId}, ${index})">▶️ Abspielen</button>
-                    <button class="btn btn-danger" onclick="deleteSavedRecording(${personId}, ${index})">🗑️ Löschen</button>
-                `;
-                savedRecordingsContainer.appendChild(recordingItem);
-            });
         }
 
         // Modal schließen
         function closeModal() {
             document.getElementById('script-modal').style.display = 'none';
             document.getElementById('modal-overlay').style.display = 'none';
-            
-            // Aufnahme stoppen, falls aktiv
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                stopRecording();
-            }
-            
-            // Audio-Context schließen
-            if (audioContext) {
-                audioContext.close();
-                audioContext = null;
-            }
-        }
-
-        // Aufnahme starten
-        async function startRecording() {
-            try {
-                // Mikrofon-Zugriff anfordern
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                
-                // MediaRecorder initialisieren
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-                
-                // Event-Listener für Daten
-                mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0) {
-                        audioChunks.push(event.data);
-                    }
-                };
-                
-                // Event-Listener für Ende der Aufnahme
-                mediaRecorder.onstop = () => {
-                    audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                    audioURL = URL.createObjectURL(audioBlob);
-                    
-                    // UI zurücksetzen
-                    document.getElementById('start-record-btn').style.display = 'none';
-                    document.getElementById('stop-record-btn').style.display = 'none';
-                    document.getElementById('play-audio-btn').style.display = 'inline-block';
-                    document.getElementById('delete-audio-btn').style.display = 'inline-block';
-                    document.getElementById('recording-indicator').style.display = 'none';
-                    document.getElementById('audio-visualizer').style.display = 'none';
-                    
-                    // Timer stoppen
-                    clearInterval(recordingTimer);
-                    
-                    // Stream stoppen
-                    stream.getTracks().forEach(track => track.stop());
-                    
-                    // Visualisierung stoppen
-                    clearInterval(visualizationInterval);
-                    initVisualizer();
-                };
-                
-                // Aufnahme starten
-                mediaRecorder.start();
-                
-                // UI aktualisieren
-                document.getElementById('start-record-btn').style.display = 'none';
-                document.getElementById('stop-record-btn').style.display = 'inline-block';
-                document.getElementById('recording-indicator').style.display = 'flex';
-                document.getElementById('audio-visualizer').style.display = 'block';
-                
-                // Timer starten
-                recordingStartTime = Date.now();
-                updateRecordingTimer();
-                recordingTimer = setInterval(updateRecordingTimer, 1000);
-                
-                // Audio-Visualisierung starten
-                startVisualization(stream);
-                
-            } catch (error) {
-                console.error('Fehler beim Starten der Aufnahme:', error);
-                alert('Fehler beim Zugriff auf das Mikrofon. Bitte stellen Sie sicher, dass Sie die Berechtigung erteilt haben.');
-            }
-        }
-
-        // Aufnahme stoppen
-        function stopRecording() {
-            if (mediaRecorder && mediaRecorder.state === 'recording') {
-                mediaRecorder.stop();
-            }
-        }
-
-        // Aufnahme abspielen
-        function playRecording() {
-            if (audioURL) {
-                const audioPlayer = document.getElementById('audio-player');
-                audioPlayer.src = audioURL;
-                document.getElementById('audio-player-container').style.display = 'block';
-                audioPlayer.play();
-            }
-        }
-
-        // Aufnahme löschen
-        function deleteRecording() {
-            if (confirm('Möchten Sie die aktuelle Aufnahme wirklich löschen?')) {
-                audioURL = null;
-                audioBlob = null;
-                
-                // UI zurücksetzen
-                document.getElementById('start-record-btn').style.display = 'inline-block';
-                document.getElementById('play-audio-btn').style.display = 'none';
-                document.getElementById('delete-audio-btn').style.display = 'none';
-                document.getElementById('audio-player-container').style.display = 'none';
-            }
-        }
-
-        // Gespeicherte Aufnahme abspielen
-        function playSavedRecording(personId, recordingIndex) {
-            const person = persons.find(p => p.id === personId);
-            if (person && person.recordings && person.recordings[recordingIndex]) {
-                const recording = person.recordings[recordingIndex];
-                const audioBlob = new Blob([recording.data], { type: 'audio/wav' });
-                const audioURL = URL.createObjectURL(audioBlob);
-                
-                const audioPlayer = document.getElementById('audio-player');
-                audioPlayer.src = audioURL;
-                document.getElementById('audio-player-container').style.display = 'block';
-                audioPlayer.play();
-            }
-        }
-
-        // Gespeicherte Aufnahme löschen
-        function deleteSavedRecording(personId, recordingIndex) {
-            if (confirm('Möchten Sie diese Aufnahme wirklich löschen?')) {
-                const person = persons.find(p => p.id === personId);
-                if (person && person.recordings) {
-                    person.recordings.splice(recordingIndex, 1);
-                    saveData();
-                    displaySavedRecordings(personId);
-                }
-            }
-        }
-
-        // Aufnahme speichern
-        function saveRecording() {
-            if (audioBlob && currentPersonId) {
-                const person = persons.find(p => p.id === currentPersonId);
-                if (person) {
-                    // Blob in ArrayBuffer konvertieren für die Speicherung
-                    const reader = new FileReader();
-                    reader.onload = function() {
-                        if (!person.recordings) {
-                            person.recordings = [];
-                        }
-                        
-                        person.recordings.push({
-                            data: Array.from(new Uint8Array(reader.result)),
-                            timestamp: Date.now()
-                        });
-                        
-                        saveData();
-                        displaySavedRecordings(currentPersonId);
-                        
-                        // UI zurücksetzen
-                        document.getElementById('start-record-btn').style.display = 'inline-block';
-                        document.getElementById('play-audio-btn').style.display = 'none';
-                        document.getElementById('delete-audio-btn').style.display = 'none';
-                        document.getElementById('audio-player-container').style.display = 'none';
-                        
-                        alert('Aufnahme erfolgreich gespeichert!');
-                    };
-                    reader.readAsArrayBuffer(audioBlob);
-                }
-            }
-        }
-
-        // Timer für Aufnahme aktualisieren
-        function updateRecordingTimer() {
-            const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
-            const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
-            const seconds = (elapsed % 60).toString().padStart(2, '0');
-            document.getElementById('recording-timer').textContent = `${minutes}:${seconds}`;
-        }
-
-        // Audio-Visualisierung starten
-        function startVisualization(stream) {
-            if (!audioContext) {
-                audioContext = new AudioContext();
-            }
-            
-            const source = audioContext.createMediaStreamSource(stream);
-            analyser = audioContext.createAnalyser();
-            analyser.fftSize = 256;
-            source.connect(analyser);
-            
-            const bufferLength = analyser.frequencyBinCount;
-            const dataArray = new Uint8Array(bufferLength);
-            
-            visualizationInterval = setInterval(() => {
-                analyser.getByteFrequencyData(dataArray);
-                
-                const visualizerBars = document.getElementById('visualizer-bars');
-                const bars = visualizerBars.querySelectorAll('.visualizer-bar');
-                
-                for (let i = 0; i < bars.length; i++) {
-                    const value = dataArray[Math.floor(i * bufferLength / bars.length)];
-                    const height = Math.max(5, (value / 255) * 100);
-                    bars[i].style.height = `${height}%`;
-                }
-            }, 100);
-        }
-
-        // Reihenfolge-Editor öffnen
-        function openOrderEditor() {
-            // Temporäre Kopie der Reihenfolge erstellen
-            tempOrder = [...persons];
-            
-            const orderList = document.getElementById('order-list');
-            orderList.innerHTML = tempOrder.map((person, index) => `
-                <div class="order-item">
-                    <div class="order-number">${index + 1}</div>
-                    <div class="order-name">${person.name}</div>
-                    <input type="number" class="order-input" id="order-${person.id}" 
-                           value="${index + 1}" min="1" max="${tempOrder.length}" 
-                           onchange="updateTempOrder(${person.id}, this.value)">
-                </div>
-            `).join('');
-            
-            document.getElementById('order-modal').style.display = 'block';
-            document.getElementById('order-overlay').style.display = 'block';
-            
-            // Fokus auf den ersten Input setzen
-            if (tempOrder.length > 0) {
-                document.getElementById(`order-${tempOrder[0].id}`).focus();
-            }
-        }
-
-        // Temporäre Reihenfolge aktualisieren
-        function updateTempOrder(personId, newPosition) {
-            newPosition = parseInt(newPosition);
-            if (isNaN(newPosition) || newPosition < 1) newPosition = 1;
-            if (newPosition > tempOrder.length) newPosition = tempOrder.length;
-            
-            // Person in tempOrder verschieben
-            const currentIndex = tempOrder.findIndex(p => p.id === personId);
-            if (currentIndex === -1) return;
-            
-            const person = tempOrder.splice(currentIndex, 1)[0];
-            tempOrder.splice(newPosition - 1, 0, person);
-            
-            // Alle Eingabefelder aktualisieren
-            tempOrder.forEach((person, index) => {
-                const input = document.getElementById(`order-${person.id}`);
-                if (input) {
-                    input.value = index + 1;
-                }
-            });
-        }
-
-        // Reihenfolge speichern
-        function saveOrder() {
-            // tempOrder als neue Reihenfolge übernehmen
-            persons = [...tempOrder];
-            
-            saveData();
-            renderNamesList();
-            closeOrderEditor();
+            currentAudioPersonId = null;
         }
 
         // Einzelne Position ändern
@@ -1178,12 +1167,6 @@
             renderNamesList();
         }
 
-        // Reihenfolge-Editor schließen
-        function closeOrderEditor() {
-            document.getElementById('order-modal').style.display = 'none';
-            document.getElementById('order-overlay').style.display = 'none';
-        }
-
         // Person bearbeiten
         function editPerson(personId) {
             const person = persons.find(p => p.id === personId);
@@ -1195,9 +1178,6 @@
                 document.getElementById('form-title').textContent = '✎ Person bearbeiten';
                 document.getElementById('submit-btn').textContent = 'Änderungen speichern';
                 document.getElementById('cancel-btn').style.display = 'inline-block';
-                
-                // Fehlermeldungen ausblenden
-                hideErrorMessages();
                 
                 document.getElementById('name-input').scrollIntoView({ behavior: 'smooth' });
                 document.getElementById('name-input').focus();
@@ -1212,18 +1192,9 @@
             document.getElementById('form-title').textContent = '➕ Neue Person hinzufügen';
             document.getElementById('submit-btn').textContent = 'Person hinzufügen';
             document.getElementById('cancel-btn').style.display = 'none';
-            
-            // Fehlermeldungen ausblenden
-            hideErrorMessages();
         }
 
-        // Fehlermeldungen ausblenden
-        function hideErrorMessages() {
-            document.getElementById('name-error').style.display = 'none';
-            document.getElementById('script-error').style.display = 'none';
-        }
-
-        // Neue Person hinzufügen oder bearbeiten
+        // Neue Person hinzufügen
         function addPerson() {
             const nameInput = document.getElementById('name-input');
             const scriptInput = document.getElementById('script-input');
@@ -1231,24 +1202,8 @@
             const name = nameInput.value.trim();
             const script = scriptInput.value.trim();
             
-            // Validierung
-            let isValid = true;
-            
             if (!name) {
-                document.getElementById('name-error').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('name-error').style.display = 'none';
-            }
-            
-            if (!script) {
-                document.getElementById('script-error').style.display = 'block';
-                isValid = false;
-            } else {
-                document.getElementById('script-error').style.display = 'none';
-            }
-            
-            if (!isValid) {
+                alert('Bitte gib einen Namen ein!');
                 return;
             }
             
@@ -1264,8 +1219,8 @@
                 const newPerson = {
                     id: Date.now(),
                     name: name,
-                    script: script,
-                    recordings: []
+                    script: script || 'Noch kein Script vorhanden...',
+                    selected: false
                 };
                 persons.push(newPerson);
             }
@@ -1279,9 +1234,13 @@
         function deletePerson(personId) {
             if (confirm('Möchtest du diese Person wirklich löschen?')) {
                 persons = persons.filter(p => p.id !== personId);
+                // Aus allen Ordnern entfernen
+                folders.forEach(folder => {
+                    folder.personIds = folder.personIds.filter(id => id !== personId);
+                });
                 saveData();
                 renderNamesList();
-                closeModal();
+                if (currentMode === 'folder') renderFolders();
             }
         }
 
@@ -1292,13 +1251,71 @@
 
         // Daten speichern
         function saveData() {
+            localStorage.setItem('moderationPersons', JSON.stringify(persons));
+            localStorage.setItem('moderationFolders', JSON.stringify(folders));
+        }
+
+        // Lokalen Speicher laden
+        function loadFromLocalStorage() {
+            const localData = localStorage.getItem('moderationPersons');
+            const folderData = localStorage.getItem('moderationFolders');
+            
+            if (localData) {
+                persons = JSON.parse(localData);
+            } else {
+                persons = JSON.parse(JSON.stringify(DEFAULT_EXCEL_DATA));
+            }
+            
+            if (folderData) {
+                folders = JSON.parse(folderData);
+            }
+            
+            renderNamesList();
+        }
+
+        function forceSync() {
+            saveData();
+            alert('Daten gespeichert!');
+        }
+
+        // Einfache Reihenfolge-Editor-Funktionen
+        function openOrderEditor() {
+            let newOrder = prompt('Gib die neuen Positionen als kommagetrennte Zahlen ein (z.B. 3,1,2,4):');
+            if (!newOrder) return;
+            
             try {
-                localStorage.setItem('moderationPersons', JSON.stringify(persons));
-            } catch (e) {
-                console.error('Fehler beim Speichern der Daten:', e);
-                setSyncStatus('Fehler beim Speichern', 'error');
+                const orderArray = newOrder.split(',').map(num => parseInt(num.trim()));
+                if (orderArray.length !== persons.length || orderArray.some(isNaN)) {
+                    alert('Ungültige Eingabe!');
+                    return;
+                }
+                
+                const newPersons = [];
+                orderArray.forEach(pos => {
+                    if (pos >= 1 && pos <= persons.length) {
+                        newPersons.push(persons[pos - 1]);
+                    }
+                });
+                
+                persons = newPersons;
+                saveData();
+                renderNamesList();
+                alert('Reihenfolge aktualisiert!');
+            } catch (error) {
+                alert('Fehler: ' + error.message);
             }
         }
+
+        // ESC Taste zum Schließen der Modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeFolderModal();
+                if (currentEditId) {
+                    cancelEdit();
+                }
+            }
+        });
     </script>
 </body>
 </html>
