@@ -53,55 +53,11 @@
             position: relative;
         }
 
-        .header-content {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex: 1;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo {
-            height: 60px;
-            width: auto;
-            border-radius: 8px;
-            object-fit: contain;
-        }
-
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo-title {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-
-        .logo-subtitle {
-            font-size: 1.2em;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        .logo-tagline {
-            font-size: 0.9em;
-            color: var(--accent);
-            margin-top: 2px;
-        }
-
         h1 {
             font-size: 2em;
             background: linear-gradient(135deg, var(--accent), #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-left: 20px;
         }
 
         .mode-switcher {
@@ -566,37 +522,16 @@
                 margin-top: 10px;
                 justify-content: center;
             }
-
-            .header-content {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .logo-container {
-                justify-content: center;
-                text-align: center;
-            }
-
-            h1 {
-                margin-left: 0;
-                text-align: center;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="header-content">
-                <div class="logo-container">
-                    <img src="LogoMonteBanner.png" alt="Montessori Regensburg" class="logo">
-                    <div class="logo-text">
-                        <div class="logo-title">Montessori</div>
-                        <div class="logo-subtitle">Regensburg</div>
-                        <div class="logo-tagline">Lernen ist Begeisterung</div>
-                    </div>
-                </div>
-                <h1>🎤 Moderation Scripts</h1>
+            <h1>🎤 Moderation Scripts</h1>
+            <div class="mode-switcher">
+                <button class="mode-btn active" onclick="switchMode('normal')">📋 Normal</button>
+                <button class="mode-btn" onclick="switchMode('folder')">📁 Ordner</button>
             </div>
             
             <!-- Farbauswahl direkt im Header -->
