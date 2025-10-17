@@ -50,6 +50,50 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            height: 60px;
+            width: auto;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .logo-subtitle {
+            font-size: 1.2em;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .logo-tagline {
+            font-size: 0.9em;
+            color: var(--accent);
+            margin-top: 2px;
         }
 
         h1 {
@@ -57,6 +101,7 @@
             background: linear-gradient(135deg, var(--accent), #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-left: 20px;
         }
 
         .mode-switcher {
@@ -78,6 +123,50 @@
             background: var(--accent);
             color: white;
             border-color: var(--accent);
+        }
+
+        /* Farbauswahl-Styles */
+        .color-picker-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-secondary);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .color-picker-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-picker-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .color-input {
+            width: 40px;
+            height: 25px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .color-reset-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
         }
 
         .main-content {
@@ -471,16 +560,56 @@
                 border-right: none;
                 border-bottom: 1px solid var(--border);
             }
+
+            .color-picker-container {
+                position: static;
+                margin-top: 10px;
+                justify-content: center;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .logo-container {
+                justify-content: center;
+                text-align: center;
+            }
+
+            h1 {
+                margin-left: 0;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎤 Moderation Scripts</h1>
-            <div class="mode-switcher">
-                <button class="mode-btn active" onclick="switchMode('normal')">📋 Normal</button>
-                <button class="mode-btn" onclick="switchMode('folder')">📁 Ordner</button>
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="LogoMonteBanner.png" alt="Montessori Regensburg" class="logo">
+                    <div class="logo-text">
+                        <div class="logo-title">Montessori</div>
+                        <div class="logo-subtitle">Regensburg</div>
+                        <div class="logo-tagline">Lernen ist Begeisterung</div>
+                    </div>
+                </div>
+                <h1>🎤 Moderation Scripts</h1>
+            </div>
+            
+            <!-- Farbauswahl direkt im Header -->
+            <div class="color-picker-container">
+                <div class="color-picker-group">
+                    <span class="color-picker-label">Hintergrund:</span>
+                    <input type="color" id="bg-color-picker" class="color-input" value="#1a1a1a">
+                </div>
+                <div class="color-picker-group">
+                    <span class="color-picker-label">Schrift:</span>
+                    <input type="color" id="text-color-picker" class="color-input" value="#ffffff">
+                </div>
+                <button class="color-reset-btn" onclick="resetColors()">Reset</button>
             </div>
         </header>
 
@@ -618,47 +747,6 @@
     </div>
 
     <script>
-        // KOMPLETTE DATEN MIT ALLEN 37 NAMEN
-        const DEFAULT_EXCEL_DATA = [
-            { id: 1, name: "Jaden", script: "Noch kein Script vorhanden..." },
-            { id: 2, name: "Daniil", script: "Noch kein Script vorhanden..." },
-            { id: 3, name: "Sarah", script: "Noch kein Script vorhanden..." },
-            { id: 4, name: "Alina", script: "Noch kein Script vorhanden..." },
-            { id: 5, name: "Ailis", script: "Noch kein Script vorhanden..." },
-            { id: 6, name: "Samed", script: "Noch kein Script vorhanden..." },
-            { id: 7, name: "Maji", script: "Noch kein Script vorhanden..." },
-            { id: 8, name: "Phillip", script: "Noch kein Script vorhanden..." },
-            { id: 9, name: "Gustav", script: "Noch kein Script vorhanden..." },
-            { id: 10, name: "Julius", script: "Noch kein Script vorhanden..." },
-            { id: 11, name: "Lea", script: "Noch kein Script vorhanden..." },
-            { id: 12, name: "Julia", script: "Noch kein Script vorhanden..." },
-            { id: 13, name: "Anna", script: "Noch kein Script vorhanden..." },
-            { id: 14, name: "Mathilda", script: "Noch kein Script vorhanden..." },
-            { id: 15, name: "Emma", script: "Noch kein Script vorhanden..." },
-            { id: 16, name: "Jonathan", script: "Noch kein Script vorhanden..." },
-            { id: 17, name: "Gerlach", script: "Noch kein Script vorhanden..." },
-            { id: 18, name: "Salomon", script: "Noch kein Script vorhanden..." },
-            { id: 19, name: "Milena", script: "Noch kein Script vorhanden..." },
-            { id: 20, name: "Benedikt", script: "Noch kein Script vorhanden..." },
-            { id: 21, name: "Karin", script: "Noch kein Script vorhanden..." },
-            { id: 22, name: "Angelika", script: "Noch kein Script vorhanden..." },
-            { id: 23, name: "Lamies", script: "Noch kein Script vorhanden..." },
-            { id: 24, name: "Oskar", script: "Noch kein Script vorhanden..." },
-            { id: 25, name: "Magdalena", script: "Noch kein Script vorhanden..." },
-            { id: 26, name: "Constantin", script: "Noch kein Script vorhanden..." },
-            { id: 27, name: "Emil", script: "Noch kein Script vorhanden..." },
-            { id: 28, name: "Zoe", script: "Noch kein Script vorhanden..." },
-            { id: 29, name: "Anna", script: "Noch kein Script vorhanden..." },
-            { id: 30, name: "Enio", script: "Noch kein Script vorhanden..." },
-            { id: 31, name: "Estella", script: "Noch kein Script vorhanden..." },
-            { id: 32, name: "Elias", script: "Noch kein Script vorhanden..." },
-            { id: 33, name: "Felix", script: "Noch kein Script vorhanden..." },
-            { id: 34, name: "Hugo", script: "Noch kein Script vorhanden..." },
-            { id: 35, name: "Said", script: "Noch kein Script vorhanden..." },
-            { id: 36, name: "Illias Baskici", script: "Noch kein Script vorhanden..." },
-            { id: 37, name: "Marie", script: "Noch kein Script vorhanden..." }
-        ];
-
         // Datenstruktur
         let persons = [];
         let folders = [];
@@ -675,7 +763,61 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadFromLocalStorage();
             setupAudioRecording();
+            loadColorSettings();
+            
+            // Event-Listener für Farbänderungen
+            document.getElementById('bg-color-picker').addEventListener('input', function(e) {
+                document.documentElement.style.setProperty('--bg-primary', e.target.value);
+                saveColorSettings();
+            });
+            
+            document.getElementById('text-color-picker').addEventListener('input', function(e) {
+                document.documentElement.style.setProperty('--text-primary', e.target.value);
+                saveColorSettings();
+            });
         });
+
+        // Farb-Einstellungen speichern
+        function saveColorSettings() {
+            const bgColor = document.getElementById('bg-color-picker').value;
+            const textColor = document.getElementById('text-color-picker').value;
+            
+            localStorage.setItem('moderationBgColor', bgColor);
+            localStorage.setItem('moderationTextColor', textColor);
+        }
+
+        // Farb-Einstellungen laden
+        function loadColorSettings() {
+            const savedBgColor = localStorage.getItem('moderationBgColor');
+            const savedTextColor = localStorage.getItem('moderationTextColor');
+            
+            if (savedBgColor) {
+                document.documentElement.style.setProperty('--bg-primary', savedBgColor);
+                document.getElementById('bg-color-picker').value = savedBgColor;
+            }
+            
+            if (savedTextColor) {
+                document.documentElement.style.setProperty('--text-primary', savedTextColor);
+                document.getElementById('text-color-picker').value = savedTextColor;
+            }
+        }
+
+        // Farben zurücksetzen
+        function resetColors() {
+            const defaultBgColor = '#1a1a1a';
+            const defaultTextColor = '#ffffff';
+            
+            document.documentElement.style.setProperty('--bg-primary', defaultBgColor);
+            document.documentElement.style.setProperty('--text-primary', defaultTextColor);
+            
+            document.getElementById('bg-color-picker').value = defaultBgColor;
+            document.getElementById('text-color-picker').value = defaultTextColor;
+            
+            localStorage.removeItem('moderationBgColor');
+            localStorage.removeItem('moderationTextColor');
+            
+            alert('Farben wurden zurückgesetzt!');
+        }
 
         // Modus wechseln
         function switchMode(mode) {
@@ -1384,8 +1526,6 @@
             
             if (localData) {
                 persons = JSON.parse(localData);
-            } else {
-                persons = JSON.parse(JSON.stringify(DEFAULT_EXCEL_DATA));
             }
             
             if (folderData) {
