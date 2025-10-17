@@ -23,23 +23,31 @@
             --success: #10b981;
             --warning: #f59e0b;
             --border: #404040;
+            --border-radius: 15px;
+            --shadow-intensity: 0.3;
+            --font-size-base: 14px;
+            --animation-speed: 0.3s;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-family);
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
             padding: 20px;
+            font-size: var(--font-size-base);
+            transition: all var(--animation-speed) ease;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
             background: var(--bg-secondary);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0,0,0,var(--shadow-intensity));
             overflow: hidden;
+            transition: all var(--animation-speed) ease;
         }
 
         header {
@@ -51,6 +59,54 @@
             justify-content: space-between;
             align-items: center;
             position: relative;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            height: 60px;
+            width: auto;
+            border-radius: 8px;
+            object-fit: contain;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--text-primary);
+            transition: all var(--animation-speed) ease;
+        }
+
+        .logo-subtitle {
+            font-size: 1.2em;
+            color: var(--text-secondary);
+            font-style: italic;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .logo-tagline {
+            font-size: 0.9em;
+            color: var(--accent);
+            margin-top: 2px;
+            transition: all var(--animation-speed) ease;
         }
 
         h1 {
@@ -58,6 +114,8 @@
             background: linear-gradient(135deg, var(--accent), #8b5cf6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-left: 20px;
+            transition: all var(--animation-speed) ease;
         }
 
         .mode-switcher {
@@ -72,7 +130,8 @@
             padding: 8px 16px;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--animation-speed) ease;
+            font-size: var(--font-size-base);
         }
 
         .mode-btn.active {
@@ -81,53 +140,198 @@
             border-color: var(--accent);
         }
 
-        /* Farbauswahl-Styles */
+        /* Erweiterte Farbauswahl-Styles */
         .color-picker-container {
             position: absolute;
             top: 20px;
             right: 20px;
             background: var(--bg-secondary);
-            padding: 10px;
-            border-radius: 8px;
+            padding: 15px;
+            border-radius: 12px;
             border: 1px solid var(--border);
             display: flex;
-            gap: 10px;
-            align-items: center;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 250px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            z-index: 100;
         }
 
         .color-picker-group {
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: space-between;
+            gap: 10px;
         }
 
         .color-picker-label {
             font-size: 12px;
             color: var(--text-secondary);
+            min-width: 100px;
         }
 
         .color-input {
-            width: 40px;
-            height: 25px;
+            width: 50px;
+            height: 30px;
             border: 1px solid var(--border);
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .color-input:hover {
+            transform: scale(1.1);
         }
 
         .color-reset-btn {
             background: var(--accent);
             color: white;
             border: none;
-            padding: 5px 8px;
-            border-radius: 4px;
+            padding: 8px 12px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .color-reset-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Customization Panel */
+        .customization-panel {
+            position: fixed;
+            top: 50%;
+            right: -300px;
+            transform: translateY(-50%);
+            background: var(--bg-secondary);
+            border: 2px solid var(--accent);
+            border-radius: 15px 0 0 15px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: -5px 5px 25px rgba(0,0,0,0.4);
+            transition: right 0.4s ease;
+            z-index: 1000;
+        }
+
+        .customization-panel.open {
+            right: 0;
+        }
+
+        .customization-toggle {
+            position: absolute;
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px 0 0 8px;
+            padding: 15px 10px;
+            cursor: pointer;
+            font-size: 20px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transition: all 0.3s ease;
+        }
+
+        .customization-toggle:hover {
+            background: var(--accent-hover);
+            padding-left: 15px;
+        }
+
+        .customization-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .customization-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .slider-container {
+            margin-bottom: 15px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-tertiary);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .font-selector {
+            width: 100%;
+            padding: 8px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 12px;
+        }
+
+        .theme-presets {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .theme-preset {
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            text-align: center;
             font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-preset:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
         }
 
         .main-content {
             display: flex;
             min-height: 700px;
+            transition: all var(--animation-speed) ease;
         }
 
         .sidebar {
@@ -135,11 +339,13 @@
             background: var(--bg-tertiary);
             border-right: 1px solid var(--border);
             padding: 20px;
+            transition: all var(--animation-speed) ease;
         }
 
         .content-area {
             flex: 1;
             padding: 20px;
+            transition: all var(--animation-speed) ease;
         }
 
         /* Ordner Styles */
@@ -150,12 +356,13 @@
             padding: 15px;
             margin-bottom: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--animation-speed) ease;
         }
 
         .folder:hover {
             border-color: var(--accent);
             background: var(--bg-primary);
+            transform: translateY(-2px);
         }
 
         .folder.active {
@@ -193,6 +400,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all var(--animation-speed) ease;
         }
 
         #names-list {
@@ -200,6 +408,7 @@
             max-height: 500px;
             overflow-y: auto;
             margin-bottom: 20px;
+            transition: all var(--animation-speed) ease;
         }
 
         .name-item {
@@ -208,7 +417,7 @@
             padding: 15px;
             border: 1px solid var(--border);
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: all var(--animation-speed) ease;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -217,6 +426,7 @@
         .name-item:hover {
             border-color: var(--accent);
             background: var(--bg-secondary);
+            transform: translateX(5px);
         }
 
         .name-item.selected {
@@ -237,6 +447,7 @@
             font-size: 14px;
             margin-right: 15px;
             flex-shrink: 0;
+            transition: all var(--animation-speed) ease;
         }
 
         .name-item-content {
@@ -249,6 +460,7 @@
         .name-text {
             font-weight: 500;
             font-size: 16px;
+            transition: all var(--animation-speed) ease;
         }
 
         .name-actions {
@@ -263,13 +475,14 @@
             padding: 10px 15px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s ease;
+            font-size: var(--font-size-base);
+            transition: all var(--animation-speed) ease;
             margin: 5px;
         }
 
         .btn:hover {
             background: var(--accent-hover);
+            transform: translateY(-2px);
         }
 
         .btn-success {
@@ -304,13 +517,14 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
-            transition: all 0.2s ease;
+            transition: all var(--animation-speed) ease;
         }
 
         .action-btn:hover {
             background: var(--accent);
             border-color: var(--accent);
             color: white;
+            transform: scale(1.1);
         }
 
         /* Audio Recorder */
@@ -320,6 +534,7 @@
             border-radius: 8px;
             padding: 15px;
             margin: 10px 0;
+            transition: all var(--animation-speed) ease;
         }
 
         .audio-controls {
@@ -358,13 +573,14 @@
             transform: translate(-50%, -50%);
             background: var(--bg-secondary);
             border: 2px solid var(--accent);
-            border-radius: 15px;
+            border-radius: var(--border-radius);
             padding: 0;
             width: 90%;
             max-width: 800px;
             max-height: 80vh;
             z-index: 1000;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: all var(--animation-speed) ease;
         }
 
         .modal-header {
@@ -374,12 +590,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-radius: 13px 13px 0 0;
+            border-radius: calc(var(--border-radius) - 2px) calc(var(--border-radius) - 2px) 0 0;
+            transition: all var(--animation-speed) ease;
         }
 
         .modal-title {
             font-size: 1.5em;
             font-weight: bold;
+            transition: all var(--animation-speed) ease;
         }
 
         .close-btn {
@@ -394,12 +612,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all var(--animation-speed) ease;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.1);
         }
 
         .modal-content {
             padding: 25px;
             max-height: 60vh;
             overflow-y: auto;
+            transition: all var(--animation-speed) ease;
         }
 
         /* Form Styles */
@@ -409,6 +633,7 @@
             background: var(--bg-tertiary);
             border-radius: 10px;
             border: 1px solid var(--border);
+            transition: all var(--animation-speed) ease;
         }
 
         .form-group {
@@ -420,6 +645,7 @@
             margin-bottom: 5px;
             font-weight: bold;
             color: var(--text-primary);
+            transition: all var(--animation-speed) ease;
         }
 
         input, textarea, select {
@@ -428,14 +654,15 @@
             background: var(--bg-secondary);
             border: 1px solid var(--border);
             border-radius: 6px;
-            font-size: 14px;
+            font-size: var(--font-size-base);
             color: var(--text-primary);
-            transition: border-color 0.3s ease;
+            transition: all var(--animation-speed) ease;
         }
 
         input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: var(--accent);
+            transform: scale(1.02);
         }
 
         textarea {
@@ -453,7 +680,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
+            font-size: var(--font-size-base);
+            transition: all var(--animation-speed) ease;
         }
 
         .instructions {
@@ -463,6 +691,7 @@
             padding: 15px;
             margin-bottom: 20px;
             color: var(--text-secondary);
+            transition: all var(--animation-speed) ease;
         }
 
         .empty-message {
@@ -470,6 +699,7 @@
             text-align: center;
             font-style: italic;
             padding: 40px 20px;
+            transition: all var(--animation-speed) ease;
         }
 
         .export-section {
@@ -478,6 +708,7 @@
             border-radius: 8px;
             padding: 15px;
             margin-top: 20px;
+            transition: all var(--animation-speed) ease;
         }
 
         /* Folder Selection Modal */
@@ -494,11 +725,12 @@
             border-radius: 8px;
             padding: 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--animation-speed) ease;
         }
 
         .folder-option:hover {
             border-color: var(--accent);
+            transform: scale(1.05);
         }
 
         .folder-option.selected {
@@ -522,29 +754,63 @@
                 margin-top: 10px;
                 justify-content: center;
             }
+
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .logo-container {
+                justify-content: center;
+                text-align: center;
+            }
+
+            h1 {
+                margin-left: 0;
+                text-align: center;
+            }
+
+            .customization-panel {
+                width: 280px;
+                right: -280px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎤 Moderation Scripts</h1>
-            <div class="mode-switcher">
-                <button class="mode-btn active" onclick="switchMode('normal')">📋 Normal</button>
-                <button class="mode-btn" onclick="switchMode('folder')">📁 Ordner</button>
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="LogoMonteBanner.png" alt="Montessori Regensburg" class="logo">
+                    <div class="logo-text">
+                        <div class="logo-title">Montessori</div>
+                        <div class="logo-subtitle">Regensburg</div>
+                        <div class="logo-tagline">Lernen ist Begeisterung</div>
+                    </div>
+                </div>
+                <h1>🎤 Moderation Scripts</h1>
             </div>
             
-            <!-- Farbauswahl direkt im Header -->
-            <div class="color-picker-container">
+            <!-- Erweiterte Farbauswahl -->
+            <div class="color-picker-container" id="color-picker">
                 <div class="color-picker-group">
-                    <span class="color-picker-label">Hintergrund:</span>
-                    <input type="color" id="bg-color-picker" class="color-input" value="#1a1a1a">
+                    <span class="color-picker-label">Haupt-Hintergrund:</span>
+                    <input type="color" id="bg-primary-picker" class="color-input" value="#1a1a1a">
                 </div>
                 <div class="color-picker-group">
-                    <span class="color-picker-label">Schrift:</span>
-                    <input type="color" id="text-color-picker" class="color-input" value="#ffffff">
+                    <span class="color-picker-label">Sekundär-Hintergrund:</span>
+                    <input type="color" id="bg-secondary-picker" class="color-input" value="#2d2d2d">
                 </div>
-                <button class="color-reset-btn" onclick="resetColors()">Reset</button>
+                <div class="color-picker-group">
+                    <span class="color-picker-label">Haupt-Schrift:</span>
+                    <input type="color" id="text-primary-picker" class="color-input" value="#ffffff">
+                </div>
+                <div class="color-picker-group">
+                    <span class="color-picker-label">Akzentfarbe:</span>
+                    <input type="color" id="accent-picker" class="color-input" value="#6366f1">
+                </div>
+                <button class="color-reset-btn" onclick="resetColors()">🎨 Farben zurücksetzen</button>
             </div>
         </header>
 
@@ -592,6 +858,11 @@
                         </span>
                     </h2>
 
+                    <div class="mode-switcher">
+                        <button class="mode-btn active" onclick="switchMode('normal')">📋 Normal</button>
+                        <button class="mode-btn" onclick="switchMode('folder')">📁 Ordner</button>
+                    </div>
+
                     <div id="normal-controls">
                         <button class="btn btn-warning" onclick="openOrderEditor()">
                             📋 Reihenfolge bearbeiten
@@ -614,7 +885,6 @@
                         <button class="btn btn-success" onclick="exportToExcel()">📈 Excel exportieren</button>
                         <button class="btn" onclick="exportToJSON()">📁 Backup exportieren</button>
                         <button class="btn" onclick="importFromJSON()">📥 Backup importieren</button>
-                        <!-- Neue TXT Buttons -->
                         <button class="btn" onclick="exportToTXT()">📄 TXT exportieren</button>
                         <button class="btn" onclick="importFromTXT()">📥 TXT importieren</button>
                     </div>
@@ -636,6 +906,74 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Customization Panel -->
+    <div class="customization-panel" id="customization-panel">
+        <button class="customization-toggle" onclick="toggleCustomization()">⚙️ Customize</button>
+        
+        <div class="customization-section">
+            <div class="customization-title">🎨 Erscheinungsbild</div>
+            
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Schatten-Intensität</span>
+                    <span id="shadow-value">30%</span>
+                </div>
+                <input type="range" min="0" max="100" value="30" class="slider" id="shadow-slider">
+            </div>
+            
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Ecken-Radius</span>
+                    <span id="radius-value">15px</span>
+                </div>
+                <input type="range" min="0" max="30" value="15" class="slider" id="radius-slider">
+            </div>
+            
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Animations-Geschwindigkeit</span>
+                    <span id="speed-value">0.3s</span>
+                </div>
+                <input type="range" min="0" max="10" value="3" class="slider" id="speed-slider">
+            </div>
+        </div>
+
+        <div class="customization-section">
+            <div class="customization-title">🔤 Schriftart</div>
+            <select class="font-selector" id="font-selector">
+                <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Segoe UI (Standard)</option>
+                <option value="Arial, Helvetica, sans-serif">Arial</option>
+                <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica Neue</option>
+                <option value="Georgia, serif">Georgia</option>
+                <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                <option value="'Courier New', Courier, monospace">Courier New</option>
+                <option value="Verdana, Geneva, sans-serif">Verdana</option>
+            </select>
+            
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Schriftgröße</span>
+                    <span id="font-size-value">14px</span>
+                </div>
+                <input type="range" min="12" max="18" value="14" class="slider" id="font-size-slider">
+            </div>
+        </div>
+
+        <div class="customization-section">
+            <div class="customization-title">🎭 Theme Presets</div>
+            <div class="theme-presets">
+                <div class="theme-preset" onclick="applyTheme('dark')" style="background: #1a1a1a; color: white;">Dark</div>
+                <div class="theme-preset" onclick="applyTheme('light')" style="background: #f5f5f5; color: #333;">Light</div>
+                <div class="theme-preset" onclick="applyTheme('blue')" style="background: #1e3a8a; color: white;">Blue</div>
+                <div class="theme-preset" onclick="applyTheme('green')" style="background: #065f46; color: white;">Green</div>
+                <div class="theme-preset" onclick="applyTheme('purple')" style="background: #5b21b6; color: white;">Purple</div>
+                <div class="theme-preset" onclick="applyTheme('warm')" style="background: #7c2d12; color: white;">Warm</div>
+            </div>
+        </div>
+
+        <button class="color-reset-btn" onclick="resetAllCustomizations()">🔄 Alles zurücksetzen</button>
     </div>
 
     <!-- Script Modal -->
@@ -694,64 +1032,287 @@
         let currentFolderSelectionPersonId = null;
         let selectedFoldersForPerson = [];
 
+        // Beispiel-Daten für den Anfang
+        const DEFAULT_PERSONS = [
+            {
+                id: 1,
+                name: "Max Mustermann",
+                script: "Herzlich willkommen, Max! Vielen Dank, dass Sie heute hier sind.",
+                selected: false
+            },
+            {
+                id: 2,
+                name: "Maria Schmidt",
+                script: "Willkommen Maria! Wir freuen uns, Sie in unserer Runde zu haben.",
+                selected: false
+            },
+            {
+                id: 3,
+                name: "Thomas Weber",
+                script: "Hallo Thomas! Schön, dass Sie den Weg zu uns gefunden haben.",
+                selected: false
+            }
+        ];
+
         // Initialisierung
         document.addEventListener('DOMContentLoaded', function() {
             loadFromLocalStorage();
             setupAudioRecording();
             loadColorSettings();
+            setupCustomization();
             
-            // Event-Listener für Farbänderungen
-            document.getElementById('bg-color-picker').addEventListener('input', function(e) {
+            // Event-Listener für erweiterte Farbänderungen
+            document.getElementById('bg-primary-picker').addEventListener('input', function(e) {
                 document.documentElement.style.setProperty('--bg-primary', e.target.value);
                 saveColorSettings();
             });
             
-            document.getElementById('text-color-picker').addEventListener('input', function(e) {
+            document.getElementById('bg-secondary-picker').addEventListener('input', function(e) {
+                document.documentElement.style.setProperty('--bg-secondary', e.target.value);
+                saveColorSettings();
+            });
+            
+            document.getElementById('text-primary-picker').addEventListener('input', function(e) {
                 document.documentElement.style.setProperty('--text-primary', e.target.value);
+                saveColorSettings();
+            });
+            
+            document.getElementById('accent-picker').addEventListener('input', function(e) {
+                document.documentElement.style.setProperty('--accent', e.target.value);
                 saveColorSettings();
             });
         });
 
+        // Customization einrichten
+        function setupCustomization() {
+            // Schatten-Intensität
+            const shadowSlider = document.getElementById('shadow-slider');
+            shadowSlider.addEventListener('input', function(e) {
+                const value = e.target.value / 100;
+                document.documentElement.style.setProperty('--shadow-intensity', value);
+                document.getElementById('shadow-value').textContent = e.target.value + '%';
+                saveCustomization();
+            });
+
+            // Ecken-Radius
+            const radiusSlider = document.getElementById('radius-slider');
+            radiusSlider.addEventListener('input', function(e) {
+                const value = e.target.value + 'px';
+                document.documentElement.style.setProperty('--border-radius', value);
+                document.getElementById('radius-value').textContent = value;
+                saveCustomization();
+            });
+
+            // Animations-Geschwindigkeit
+            const speedSlider = document.getElementById('speed-slider');
+            speedSlider.addEventListener('input', function(e) {
+                const value = (e.target.value / 10) + 's';
+                document.documentElement.style.setProperty('--animation-speed', value);
+                document.getElementById('speed-value').textContent = value;
+                saveCustomization();
+            });
+
+            // Schriftart
+            const fontSelector = document.getElementById('font-selector');
+            fontSelector.addEventListener('change', function(e) {
+                document.documentElement.style.setProperty('--font-family', e.target.value);
+                saveCustomization();
+            });
+
+            // Schriftgröße
+            const fontSizeSlider = document.getElementById('font-size-slider');
+            fontSizeSlider.addEventListener('input', function(e) {
+                const value = e.target.value + 'px';
+                document.documentElement.style.setProperty('--font-size-base', value);
+                document.getElementById('font-size-value').textContent = value;
+                saveCustomization();
+            });
+
+            // Lade gespeicherte Customization-Einstellungen
+            loadCustomization();
+        }
+
+        // Customization-Einstellungen speichern
+        function saveCustomization() {
+            const customization = {
+                shadow: document.getElementById('shadow-slider').value,
+                radius: document.getElementById('radius-slider').value,
+                speed: document.getElementById('speed-slider').value,
+                font: document.getElementById('font-selector').value,
+                fontSize: document.getElementById('font-size-slider').value
+            };
+            localStorage.setItem('moderationCustomization', JSON.stringify(customization));
+        }
+
+        // Customization-Einstellungen laden
+        function loadCustomization() {
+            const saved = localStorage.getItem('moderationCustomization');
+            if (saved) {
+                const customization = JSON.parse(saved);
+                
+                document.getElementById('shadow-slider').value = customization.shadow;
+                document.getElementById('radius-slider').value = customization.radius;
+                document.getElementById('speed-slider').value = customization.speed;
+                document.getElementById('font-selector').value = customization.font;
+                document.getElementById('font-size-slider').value = customization.fontSize;
+                
+                // Werte anwenden
+                document.documentElement.style.setProperty('--shadow-intensity', customization.shadow / 100);
+                document.documentElement.style.setProperty('--border-radius', customization.radius + 'px');
+                document.documentElement.style.setProperty('--animation-speed', (customization.speed / 10) + 's');
+                document.documentElement.style.setProperty('--font-family', customization.font);
+                document.documentElement.style.setProperty('--font-size-base', customization.fontSize + 'px');
+                
+                // Werte anzeigen
+                document.getElementById('shadow-value').textContent = customization.shadow + '%';
+                document.getElementById('radius-value').textContent = customization.radius + 'px';
+                document.getElementById('speed-value').textContent = (customization.speed / 10) + 's';
+                document.getElementById('font-size-value').textContent = customization.fontSize + 'px';
+            }
+        }
+
+        // Theme anwenden
+        function applyTheme(theme) {
+            const themes = {
+                dark: {
+                    bgPrimary: '#1a1a1a',
+                    bgSecondary: '#2d2d2d',
+                    textPrimary: '#ffffff',
+                    accent: '#6366f1'
+                },
+                light: {
+                    bgPrimary: '#f5f5f5',
+                    bgSecondary: '#ffffff',
+                    textPrimary: '#333333',
+                    accent: '#3b82f6'
+                },
+                blue: {
+                    bgPrimary: '#1e3a8a',
+                    bgSecondary: '#1e40af',
+                    textPrimary: '#ffffff',
+                    accent: '#60a5fa'
+                },
+                green: {
+                    bgPrimary: '#065f46',
+                    bgSecondary: '#047857',
+                    textPrimary: '#ffffff',
+                    accent: '#10b981'
+                },
+                purple: {
+                    bgPrimary: '#5b21b6',
+                    bgSecondary: '#6d28d9',
+                    textPrimary: '#ffffff',
+                    accent: '#8b5cf6'
+                },
+                warm: {
+                    bgPrimary: '#7c2d12',
+                    bgSecondary: '#9a3412',
+                    textPrimary: '#ffffff',
+                    accent: '#f59e0b'
+                }
+            };
+
+            const selectedTheme = themes[theme];
+            if (selectedTheme) {
+                document.documentElement.style.setProperty('--bg-primary', selectedTheme.bgPrimary);
+                document.documentElement.style.setProperty('--bg-secondary', selectedTheme.bgSecondary);
+                document.documentElement.style.setProperty('--text-primary', selectedTheme.textPrimary);
+                document.documentElement.style.setProperty('--accent', selectedTheme.accent);
+                
+                // Farbwähler aktualisieren
+                document.getElementById('bg-primary-picker').value = selectedTheme.bgPrimary;
+                document.getElementById('bg-secondary-picker').value = selectedTheme.bgSecondary;
+                document.getElementById('text-primary-picker').value = selectedTheme.textPrimary;
+                document.getElementById('accent-picker').value = selectedTheme.accent;
+                
+                saveColorSettings();
+            }
+        }
+
+        // Customization Panel umschalten
+        function toggleCustomization() {
+            const panel = document.getElementById('customization-panel');
+            panel.classList.toggle('open');
+        }
+
+        // Alle Customizations zurücksetzen
+        function resetAllCustomizations() {
+            // Standardwerte setzen
+            document.getElementById('shadow-slider').value = 30;
+            document.getElementById('radius-slider').value = 15;
+            document.getElementById('speed-slider').value = 3;
+            document.getElementById('font-selector').value = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+            document.getElementById('font-size-slider').value = 14;
+            
+            // Werte anwenden
+            document.documentElement.style.setProperty('--shadow-intensity', '0.3');
+            document.documentElement.style.setProperty('--border-radius', '15px');
+            document.documentElement.style.setProperty('--animation-speed', '0.3s');
+            document.documentElement.style.setProperty('--font-family', "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif");
+            document.documentElement.style.setProperty('--font-size-base', '14px');
+            
+            // Werte anzeigen
+            document.getElementById('shadow-value').textContent = '30%';
+            document.getElementById('radius-value').textContent = '15px';
+            document.getElementById('speed-value').textContent = '0.3s';
+            document.getElementById('font-size-value').textContent = '14px';
+            
+            // Farben zurücksetzen
+            resetColors();
+            
+            saveCustomization();
+            alert('Alle Anpassungen wurden zurückgesetzt!');
+        }
+
         // Farb-Einstellungen speichern
         function saveColorSettings() {
-            const bgColor = document.getElementById('bg-color-picker').value;
-            const textColor = document.getElementById('text-color-picker').value;
-            
-            localStorage.setItem('moderationBgColor', bgColor);
-            localStorage.setItem('moderationTextColor', textColor);
+            const colorSettings = {
+                bgPrimary: document.getElementById('bg-primary-picker').value,
+                bgSecondary: document.getElementById('bg-secondary-picker').value,
+                textPrimary: document.getElementById('text-primary-picker').value,
+                accent: document.getElementById('accent-picker').value
+            };
+            localStorage.setItem('moderationColors', JSON.stringify(colorSettings));
         }
 
         // Farb-Einstellungen laden
         function loadColorSettings() {
-            const savedBgColor = localStorage.getItem('moderationBgColor');
-            const savedTextColor = localStorage.getItem('moderationTextColor');
-            
-            if (savedBgColor) {
-                document.documentElement.style.setProperty('--bg-primary', savedBgColor);
-                document.getElementById('bg-color-picker').value = savedBgColor;
-            }
-            
-            if (savedTextColor) {
-                document.documentElement.style.setProperty('--text-primary', savedTextColor);
-                document.getElementById('text-color-picker').value = savedTextColor;
+            const savedColors = localStorage.getItem('moderationColors');
+            if (savedColors) {
+                const colors = JSON.parse(savedColors);
+                
+                document.documentElement.style.setProperty('--bg-primary', colors.bgPrimary);
+                document.documentElement.style.setProperty('--bg-secondary', colors.bgSecondary);
+                document.documentElement.style.setProperty('--text-primary', colors.textPrimary);
+                document.documentElement.style.setProperty('--accent', colors.accent);
+                
+                document.getElementById('bg-primary-picker').value = colors.bgPrimary;
+                document.getElementById('bg-secondary-picker').value = colors.bgSecondary;
+                document.getElementById('text-primary-picker').value = colors.textPrimary;
+                document.getElementById('accent-picker').value = colors.accent;
             }
         }
 
         // Farben zurücksetzen
         function resetColors() {
-            const defaultBgColor = '#1a1a1a';
-            const defaultTextColor = '#ffffff';
+            const defaultColors = {
+                bgPrimary: '#1a1a1a',
+                bgSecondary: '#2d2d2d',
+                textPrimary: '#ffffff',
+                accent: '#6366f1'
+            };
             
-            document.documentElement.style.setProperty('--bg-primary', defaultBgColor);
-            document.documentElement.style.setProperty('--text-primary', defaultTextColor);
+            document.documentElement.style.setProperty('--bg-primary', defaultColors.bgPrimary);
+            document.documentElement.style.setProperty('--bg-secondary', defaultColors.bgSecondary);
+            document.documentElement.style.setProperty('--text-primary', defaultColors.textPrimary);
+            document.documentElement.style.setProperty('--accent', defaultColors.accent);
             
-            document.getElementById('bg-color-picker').value = defaultBgColor;
-            document.getElementById('text-color-picker').value = defaultTextColor;
+            document.getElementById('bg-primary-picker').value = defaultColors.bgPrimary;
+            document.getElementById('bg-secondary-picker').value = defaultColors.bgSecondary;
+            document.getElementById('text-primary-picker').value = defaultColors.textPrimary;
+            document.getElementById('accent-picker').value = defaultColors.accent;
             
-            localStorage.removeItem('moderationBgColor');
-            localStorage.removeItem('moderationTextColor');
-            
-            alert('Farben wurden zurückgesetzt!');
+            localStorage.removeItem('moderationColors');
         }
 
         // Modus wechseln
@@ -1149,7 +1710,7 @@
             input.click();
         }
 
-        // NEUE TXT-EXPORT-FUNKTION
+        // TXT-EXPORT-FUNKTION
         function exportToTXT() {
             let txtContent = "Moderation Scripts Export\n";
             txtContent += "==========================\n\n";
@@ -1179,7 +1740,7 @@
             alert('TXT-Datei wurde erstellt!');
         }
 
-        // NEUE TXT-IMPORT-FUNKTION
+        // TXT-IMPORT-FUNKTION
         function importFromTXT() {
             const input = document.createElement('input');
             input.type = 'file';
@@ -1204,7 +1765,6 @@
 
         // TXT-Daten parsen
         function parseTXTData(content) {
-            // Einfache Implementierung - kann je nach TXT-Format angepasst werden
             const lines = content.split('\n');
             const newPersons = [];
             let currentPerson = null;
@@ -1461,6 +2021,9 @@
             
             if (localData) {
                 persons = JSON.parse(localData);
+            } else {
+                // Beispiel-Daten laden, wenn keine Daten vorhanden sind
+                persons = JSON.parse(JSON.stringify(DEFAULT_PERSONS));
             }
             
             if (folderData) {
@@ -1468,6 +2031,7 @@
             }
             
             renderNamesList();
+            renderFolders();
         }
 
         function forceSync() {
