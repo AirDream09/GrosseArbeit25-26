@@ -550,6 +550,9 @@
                         <button class="btn btn-success" onclick="exportToExcel()">📈 Excel exportieren</button>
                         <button class="btn" onclick="exportToJSON()">📁 Backup exportieren</button>
                         <button class="btn" onclick="importFromJSON()">📥 Backup importieren</button>
+                        <!-- Neue TXT Buttons -->
+                        <button class="btn" onclick="exportToTXT()">📄 TXT exportieren</button>
+                        <button class="btn" onclick="importFromTXT()">📥 TXT importieren</button>
                     </div>
 
                     <!-- Add Person Form -->
@@ -1067,6 +1070,125 @@
                 reader.readAsText(file);
             };
             input.click();
+        }
+
+        // NEUE TXT-EXPORT-FUNKTION
+        function exportToTXT() {
+            let txtContent = "Moderation Scripts Export\n";
+            txtContent += "==========================\n\n";
+            
+            persons.forEach((person, index) => {
+                txtContent += `${index + 1}. ${person.name}\n`;
+                txtContent += "=".repeat(person.name.length + 4) + "\n";
+                txtContent += person.script + "\n\n";
+                
+                // Ordner-Informationen hinzufügen
+                const personFolders = folders.filter(folder => 
+                    folder.personIds.includes(person.id)
+                ).map(folder => folder.name);
+                
+                if (personFolders.length > 0) {
+                    txtContent += `Ordner: ${personFolders.join(', ')}\n`;
+                }
+                
+                txtContent += "-".repeat(50) + "\n\n";
+            });
+            
+            const blob = new Blob([txtContent], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'moderation_scripts.txt';
+            link.click();
+            alert('TXT-Datei wurde erstellt!');
+        }
+
+        // NEUE TXT-IMPORT-FUNKTION
+        function importFromTXT() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.txt';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const content = e.target.result;
+                        if (confirm('Möchtest du die aktuellen Daten mit der TXT-Datei ersetzen? Achtung: Dies löscht alle bestehenden Daten!')) {
+                            parseTXTData(content);
+                        }
+                    } catch (error) {
+                        alert('Fehler beim Import: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        // TXT-Daten parsen
+        function parseTXTData(content) {
+            // Einfache Implementierung - kann je nach TXT-Format angepasst werden
+            const lines = content.split('\n');
+            const newPersons = [];
+            let currentPerson = null;
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                
+                // Personennamen erkennen (Zahl gefolgt von Punkt und Name)
+                const nameMatch = line.match(/^(\d+)\.\s+(.+)$/);
+                if (nameMatch) {
+                    // Vorherige Person speichern, falls vorhanden
+                    if (currentPerson) {
+                        newPersons.push(currentPerson);
+                    }
+                    
+                    // Neue Person erstellen
+                    currentPerson = {
+                        id: Date.now() + i,
+                        name: nameMatch[2],
+                        script: '',
+                        selected: false
+                    };
+                    continue;
+                }
+                
+                // Script-Inhalt sammeln (bis zur nächsten Person oder Trennlinie)
+                if (currentPerson && line && 
+                    !line.startsWith('===') && 
+                    !line.startsWith('---') && 
+                    !line.startsWith('Ordner:') &&
+                    !line.startsWith('Moderation Scripts')) {
+                    
+                    if (currentPerson.script) {
+                        currentPerson.script += '\n' + line;
+                    } else {
+                        currentPerson.script = line;
+                    }
+                }
+                
+                // Trennlinie erkennen - Person abschließen
+                if (line.startsWith('---') && currentPerson) {
+                    newPersons.push(currentPerson);
+                    currentPerson = null;
+                }
+            }
+            
+            // Letzte Person speichern
+            if (currentPerson) {
+                newPersons.push(currentPerson);
+            }
+            
+            if (newPersons.length > 0) {
+                persons = newPersons;
+                folders = []; // Ordner werden nicht aus TXT importiert
+                saveData();
+                renderNamesList();
+                if (currentMode === 'folder') renderFolders();
+                alert(`${newPersons.length} Personen aus TXT importiert!`);
+            } else {
+                alert('Keine gültigen Daten in der TXT-Datei gefunden!');
+            }
         }
 
         // Namenliste rendern
